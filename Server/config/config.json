@@ -1,0 +1,10 @@
+{
+    "test": {
+      
+    },
+    "development": {
+      "PORT": 3000,
+      "MONGODB_URI": "mongodb://madmax:madmax@ds125388.mlab.com:25388/react-chat",
+      "JWT_SECRET": "pojiaj234oi234oij234oij4"
+    }
+  }
