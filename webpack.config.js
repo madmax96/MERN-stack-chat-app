@@ -42,7 +42,15 @@ module.exports= (env,args)=>{
             contentBase:path.join(__dirname ,'public'),
             historyApiFallback:true,
             proxy: {
-                "/": "http://localhost:3000"
+                "/": {
+                    target:"http://localhost:3000",
+                    bypass: function(req, res, proxyOptions) {
+                        if (req.headers.accept.indexOf("html") !== -1) {
+                          console.log("Skipping proxy for browser request.");
+                          return "/index.html";
+                        }
+                      }
+                }
               }
         }
     }

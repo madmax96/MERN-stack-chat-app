@@ -7,7 +7,7 @@ import './styles/styles.scss';
 import configureStore from './Store/configureStore';
 import axios from 'axios';
 import config from './Config/config';
-//import Ws from 'utils/ws';
+import Ws from './utils/ws';
 const store = configureStore();
 
 const jsx = (<Provider store={store}>
@@ -16,14 +16,17 @@ const jsx = (<Provider store={store}>
 
 ReactDOM.render(jsx,document.getElementById('react-app'));
 
-const socket = new WebSocket(config.url);
-socket.onopen = function(){
-    console.log('open');
-    socket.send('test test')
-}
-
-axios.post(`/login`).then((data)=>{
-    console.log(data);
-}).catch((err)=>{
-    console.log(err);
+const ws = new Ws(config.url,'token_key_here');
+ws.connect().then(()=>{
+    console.log("connected successfully");
+    ws.on('ws_close',()=>{
+        console.log('Closed')
+    });
+  
+    ws.on('newMessage',(messageData)=>{
+        console.log(messageData);
+    });
+    ws.emmit('userMessage',{from:'madmax',text:'heyyy'});
+},(error)=>{
+    console.log('rejected',error);
 })
