@@ -4,7 +4,7 @@ import React from 'react';
 export const LoginRegisterPage = (props) => (
   <div>
     <p className="test">Login Page</p>
-    <p>Test</p>
+    <p>Test111</p>
   </div>
 );
 

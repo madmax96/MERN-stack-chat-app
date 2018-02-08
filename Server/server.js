@@ -10,17 +10,17 @@ require('./database/connect');
 const server = http.createServer(app);
 const publicPath = path.join(__dirname,'..','public');
 
-app.use(function(req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
-    next();
-});
+// app.use(function(req, res, next) {
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     res.setHeader('Access-Control-Allow-Credentials', 'true');
+//     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
+//     next();
+// });
 
-
+app.use(express.static(publicPath));
 app.use(bodyParser.json());
 app.use(httpRouter);
-app.use(express.static(publicPath));
+
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(publicPath, 'index.html'));
