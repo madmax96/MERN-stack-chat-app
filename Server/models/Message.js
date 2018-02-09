@@ -17,7 +17,8 @@ let MessageSchema = new mongoose.Schema({
     },
     text:{
         required:true,
-        type:String
+        type:String,
+        trim: true
     }
 });
 

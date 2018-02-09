@@ -1,16 +1,13 @@
-/*
 
+/*
+Docs from new message Event
 
 Receive{
-    text:String,
-    chatId:ObjectId
+    chat:ObjectId,
 }
 
 broadcast{
-    text:String,
-    time:timestamp,
-    creator:ObjectId
-    chatId:ObjectId
+     chat:ObjectId,
 }
 */
 

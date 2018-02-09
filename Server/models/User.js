@@ -17,7 +17,8 @@ let UserSchema = new mongoose.Schema({
   },
   name:{
       type:String,
-      required:true
+      required:true,
+      trim: true
   },
   password: {
     type: String,
@@ -106,7 +107,6 @@ UserSchema.statics.findByCredentials = function (email, password) {
   });
 };
 
-
 UserSchema.methods.removeToken = function (token) {
   var user = this;
 
@@ -134,4 +134,4 @@ UserSchema.pre('save',function(next){
 
 let User = mongoose.model('User', UserSchema);
 
-module.exports = {User}
+module.exports = User

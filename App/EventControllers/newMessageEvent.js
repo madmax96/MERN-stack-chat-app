@@ -15,9 +15,7 @@ broadcast{
 */
 
 
-const ChatRoom = require('./../models/ChatRoom');
-const Message = require('./../models/Message');
-module.exports = (data,ws,wss)=>{
+export default (data,dispatch)=>{
     
     
 }

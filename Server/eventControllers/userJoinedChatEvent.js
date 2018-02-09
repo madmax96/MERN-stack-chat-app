@@ -1,19 +1,16 @@
+
 /*
 
 
 Receive{
-    text:String,
-    chatId:ObjectId
+    chat:ObjectId,
 }
 
 broadcast{
-    text:String,
-    time:timestamp,
-    creator:ObjectId
-    chatId:ObjectId
+    user:User,
+    chat:ObjectId,
 }
 */
-
 
 const ChatRoom = require('./../models/ChatRoom');
 const Message = require('./../models/Message');

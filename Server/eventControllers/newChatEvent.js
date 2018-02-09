@@ -2,16 +2,18 @@
 
 
 Receive{
-    text:String,
+    group:String,
+    title:String,
+    maxNumOfUsers:Number
+}
+broadcast{
+    group:String,
+    title:String,
+    maxNumOfUsers:Number
     chatId:ObjectId
+    admin:User
 }
 
-broadcast{
-    text:String,
-    time:timestamp,
-    creator:ObjectId
-    chatId:ObjectId
-}
 */
 
 

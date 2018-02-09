@@ -16,9 +16,20 @@ let ChatRoomSchema = new mongoose.Schema({
         type:String,
         enum:['Sport','Celebrity','Politics','Movies','Songs']
     },
+    title:{
+        type:String,
+        required:true,
+        minlength:10,
+        maxlength:30
+    },
+    maxNumOfUsers:{
+        type:Number,
+        min:2,
+        max:8
+    },
     users:[{
         user:{
-            required:true,
+            required:false,
             type:mongoose.Schema.Types.ObjectId
         }
     }],

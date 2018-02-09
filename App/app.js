@@ -7,8 +7,25 @@ import './styles/styles.scss';
 import configureStore from './Store/configureStore';
 import axios from 'axios';
 import config from './Config/config';
-import Ws from './utils/ws';
-const store = configureStore();
+
+const store = configureStore(); 
+//console.log(store.getState());
+const websocket = store.getState().websocket;
+websocket.dispatch = store.dispatch;
+
+import newMessageEvent from './eventControllers/newMessageEvent';
+import newChatEvent from './eventControllers/newChatEvent';
+import userJoinedChatEvent from './eventControllers/userJoinedChatEvent';
+import userLeftChatEvent  from './eventControllers/userLeftChatEvent';
+import adminClosedChatEvent from './eventControllers/adminClosedChatEvent';
+
+
+
+websocket.on('newMessage',newMessageEvent);
+websocket.on('newChat',newChatEvent);
+websocket.on('userJoinedChat',userJoinedChatEvent);
+websocket.on('userLeftChat',userLeftChatEvent);
+websocket.on('adminClosedChat',adminClosedChatEvent);
 
 const jsx = (<Provider store={store}>
                 <AppRouter/>
@@ -16,17 +33,3 @@ const jsx = (<Provider store={store}>
 
 ReactDOM.render(jsx,document.getElementById('react-app'));
 
-const ws = new Ws(config.url,'token_key_here');
-ws.connect().then(()=>{
-    console.log("connected successfully");
-    ws.on('ws_close',()=>{
-        console.log('Closed')
-    });
-  
-    ws.on('newMessage',(messageData)=>{
-        console.log(messageData);
-    });
-    ws.emmit('userMessage',{from:'madmax',text:'heyyy'});
-},(error)=>{
-    console.log('rejected',error);
-})
