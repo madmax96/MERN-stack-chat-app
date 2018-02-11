@@ -75,6 +75,7 @@ wss.on('connection', function connection(ws,request) {
     ws.on('error',(e)=>{
         console.log('client gone ' , e);
     });
+   
     ws.on('close',(e)=>{
         console.log('client close ' , e);
     });

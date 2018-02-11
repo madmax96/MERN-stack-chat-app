@@ -1,15 +1,15 @@
 export default class Socket{
     constructor(url){
-        this.dispatch = null;
+        
         this.socket=null;
         this.url=url;
         this.registeredEvents={};
         
     };
-    connect(token){
+    connect(token=''){
         return new Promise((res,rej)=>{
             try{
-                this.socket = new WebSocket(`${this.url}/${this.token}`);
+                this.socket = new WebSocket(`${this.url}/${token}`);
             }catch(e){
                 rej(e);
             }
@@ -22,7 +22,7 @@ export default class Socket{
                     const serverEvent=messageData.event;
                     const data = messageData.data;
                     if(this.registeredEvents[serverEvent]){
-                        this.registeredEvents[serverEvent](data,this.dispatch);
+                        this.registeredEvents[serverEvent](data);
                     }
                 };   
                 this.socket.onclose=()=>{

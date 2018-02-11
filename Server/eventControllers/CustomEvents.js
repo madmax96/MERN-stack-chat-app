@@ -2,7 +2,6 @@ class CustomEvents{
 
     constructor(){
         this.registeredEvents={};
-        this.eventHandler=this.eventHandler.bind(this);
     }
 
     on(event,callback){

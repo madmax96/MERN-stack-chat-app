@@ -5,6 +5,7 @@ const User = require('../models/User');
 
 router.post('/',(req,res)=>{
     const {email=false,password=false} = req.body;
+    console.log(email , password)
     if(!email || !password){
         res.status(400);
         return;
@@ -14,7 +15,7 @@ router.post('/',(req,res)=>{
       res.header('x-auth', token).send(user);
     });
   }).catch((e) => { 
-    res.status(400).send();
+    res.status(401).send();
   });
 }); 
 

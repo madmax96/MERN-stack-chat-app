@@ -1,11 +1,15 @@
 import React from 'react';
-import {connect} from 'react-redux';
-
-class LoginPage extends React.Component{
+import Home from './Home';
+import ReactDOM from 'react-dom';
+import axios from 'axios';
+import {Link} from 'react-router-dom';
+export default class LoginPage extends React.Component{
 
   state = {
       email:'',
-      password:''
+      password:'',
+      passwordError:'',
+      authError:''
   }
   
   onEmailChange = (e)=>{
@@ -20,29 +24,24 @@ class LoginPage extends React.Component{
 
   startLogin = (e)=>{
     e.preventDefault();
-    //this.props.startLogin(this.state.email,this.state.password);
-    
-
-    
-    // axios.post('/login',{email:'mladen@gmail.com',password:'123asd'}).then((response)=>{
-    //   const token = response.headers['x-auth'];
-    //   const ws = new Ws(config.url,token);
-    //   ws.connect().then(()=>{
-    //       console.log("connected successfully");
-    //       ws.on('ws_close',()=>{
-    //           console.log('Closed')
-    //       });
-        
-    //       ws.on('newMessage',(messageData)=>{
-    //           console.log(messageData);
-    //       });
-    //       ws.emmit('userMessage',{from:'madmax',text:'heyyy'});
-    //   },(error)=>{
-    //       console.log('rejected',error);
-    //   })
-    // }).catch((e)=>{
-    //   console.log(e);
-    // })
+    const email = this.state.email;
+    const password = this.state.password;
+    if(password.length<6){
+      this.setState({passwordError:'Password must have minimum 6 characters'});
+      return;
+    }
+    axios.post('/login',{email,password})
+    .then((response)=>{
+      console.log(response);
+      const token = response.headers['x-auth'];
+      localStorage.setItem("x-auth",token);
+    //if login successfull
+    ReactDOM.render(<Home token = {token} userData = {response.data}/>,document.getElementById('react-app'));
+    })
+    .catch((err)=>{
+      console.log(err);
+      this.setState({authError:'Wrong email or password'});
+    });
   }
 
 
@@ -50,17 +49,20 @@ render(){
     return(
       <div>
         <h1 className="test">Login Page</h1>
+        <p>{this.state.authError}</p>
         <form onSubmit={this.startLogin}>
-          <input type="email" name="email" value={this.state.email} onChange={this.onEmailChange}/>
-          <input type="password" name="password" value={this.state.password} onChange={this.onPasswordChange}/>
-          <button>Log in</button>
+          <div>
+            <input type="email" name="email" value={this.state.email} onChange={this.onEmailChange}/>
+          </div>
+          <div>
+            <input type="password" name="password" value={this.state.password} onChange={this.onPasswordChange}/>
+            <span>{this.state.passwordError}</span>
+          </div>
+            <button>Log in</button>
         </form>
+          <Link to="/register">Register</Link>
       </div>
     )
   }
 }
-  
-
-
-export default connect(undefined, undefined)(LoginPage);
 
