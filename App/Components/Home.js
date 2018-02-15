@@ -15,7 +15,8 @@ constructor(props){
         personalChats:{},
         otherChats:{},
         notifications:[],
-        selectedChat:null
+        selectedChat:null,
+        messages:[]
         }
         props.userData.personalChats.forEach(chat => {
             this.state.personalChats[chat._id]={chat}
@@ -27,6 +28,13 @@ componentDidMount(){
     this.websocket = new Ws(config.url);
     this.websocket.on('ws_close',()=>{console.log('Connection is closed by server')});
     this.websocket.on('newMessage',(data) => newMessageEvent(data,this.setState.bind(this)));
+
+
+    // this.websocket.on('newMessage',(data)=>{
+    //     this.setState(newMessageEvent(data))
+    // });
+
+
     this.websocket.on('newChat',newChatEvent);
     this.websocket.on('userJoinedChat',userJoinedChatEvent);
     this.websocket.on('userLeftChat',userLeftChatEvent);
@@ -40,14 +48,14 @@ componentDidMount(){
     })
 }
 componentWillUnmount(){
-    websocket.closeConnection();
+    this.websocket.closeConnection();
 }
 
     render(){
         const token = this.props.token;
         return(
             <div>
-                 <p>No messages</p> 
+                 <p>Message : {this.state.messages[0]}</p> 
                    
                 
             </div>

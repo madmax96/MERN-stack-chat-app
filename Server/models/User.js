@@ -31,18 +31,6 @@ let UserSchema = new mongoose.Schema({
       required: true
     }
   }],
-  personalChats:[{
-    chat :{
-        required:false,
-        type:mongoose.Schema.Types.ObjectId
-    }
-  }],
-  otherChats:[{
-    chat :{
-        required:false,
-        type:mongoose.Schema.Types.ObjectId
-    }
-  }],
   subscribedTo:{
       type:[String],
       required:false,

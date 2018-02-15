@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-
-
+ 
 let ChatRoomSchema = new mongoose.Schema({
 
     creator:{

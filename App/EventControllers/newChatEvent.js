@@ -16,7 +16,7 @@ broadcast{
 
 */
 
-export default (data,dispatch)=>{
+export default (data,setState)=>{
     
-    
+    console.log('new chat',data)
 }

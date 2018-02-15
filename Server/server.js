@@ -67,7 +67,7 @@ customEvents.on('userJoinedChat',userJoinedChatEvent);
 customEvents.on('userLeftChat',userLeftChatEvent);
 customEvents.on('adminClosedChat',adminClosedChatEvent);
 
-
+wss.rooms = {}
 
 wss.on('connection', function connection(ws,request) {
     ws.user=request.user;
@@ -75,8 +75,20 @@ wss.on('connection', function connection(ws,request) {
     ws.on('error',(e)=>{
         console.log('client gone ' , e);
     });
-   
+
+   ws.send(JSON.stringify({event:"newMessage",data:"test"}));
     ws.on('close',(e)=>{
         console.log('client close ' , e);
     });
 });
+
+// setTimeout(()=>{
+//     const client  =  new WebSocket('ws://localhost:3000/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTdkYmJjYjkzNjFkMDE1NTRiN2EzODYiLCJpYXQiOjE1MTgzNzAzOTB9.tdZtgXD2EtcoFKEuIzjiLlGhnDCH7knY8w-Cap2VE8Y');
+
+// client.onerror = (e)=>{console.log(e.message)};
+// client.onopen = ()=>{
+//     client.send(JSON.stringify({event:"newChat",data:{
+//         group:"Sport",title:"Real vs Barca",maxNumOfUsers:5
+//     }}));
+// }
+// },5000)

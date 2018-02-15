@@ -16,8 +16,11 @@ broadcast{
 
 
 export default (data,setState)=>{
-  console.log('received',data)
+   console.log('received',data)
    setState((prevState)=>({     
-        messages:[...prevState.messages,data.text]
+        messages:[...prevState.messages,data]
     }))
+// return (prevState) => ({
+//     messages:[...prevState.messages,data]
+// })
 }

@@ -19,5 +19,9 @@ const ChatRoom = require('./../models/ChatRoom');
 const Message = require('./../models/Message');
 module.exports = (data,ws,wss)=>{
     
-    console.log(data)
+    console.log(data);
+
+    // WebsocketServer.broadcast.toChat('chatId',dataToSend);
+
+    //wss.broadcast.toChat(chatId)
 }
