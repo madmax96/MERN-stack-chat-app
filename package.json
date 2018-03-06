@@ -6,18 +6,19 @@
   "scripts": {
     "dev-server": "webpack-dev-server",
     "build-dev": "webpack",
-    "build-prod": "webpack -p --env production"
+    "build-prod": "webpack -p --env production",
+    "test-server": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha Server/**/*.test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/madmax96/eposProjekat.git"
+    "url": "git+https://github.com/madmax96/MERN-stack-chat-app.git"
   },
   "author": "madmax",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/madmax96/eposProjekat/issues"
+    "url": "https://github.com/madmax96/MERN-stack-chat-app/issues"
   },
-  "homepage": "https://github.com/madmax96/eposProjekat#readme",
+  "homepage": "https://github.com/madmax96/MERN-stack-chat-app#readme",
   "dependencies": {
     "axios": "^0.17.1",
     "babel-preset-env": "^1.6.1",
@@ -33,10 +34,7 @@
     "normalize.css": "^7.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
     "validator": "^9.4.0",
     "ws": "^4.0.0"
   },
@@ -49,10 +47,13 @@
     "babel-polyfill": "^6.26.0",
     "cross-env": "^5.1.3",
     "css-loader": "^0.28.9",
+    "expect": "^22.4.0",
     "extract-text-webpack-plugin": "^3.0.2",
+    "mocha": "^5.0.1",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.1",
+    "supertest": "^3.0.0",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.1"
   }

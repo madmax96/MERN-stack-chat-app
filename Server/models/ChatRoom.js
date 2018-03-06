@@ -19,7 +19,7 @@ let ChatRoomSchema = new mongoose.Schema({
         type:String,
         required:true,
         minlength:10,
-        maxlength:30
+        maxlength:50
     },
     maxNumOfUsers:{
         type:Number,
@@ -27,7 +27,11 @@ let ChatRoomSchema = new mongoose.Schema({
         max:8
     },
     users:[{
-        user:{
+        userId:{
+            required:false,
+            type:mongoose.Schema.Types.ObjectId
+        },
+        lastMessageSeen:{
             required:false,
             type:mongoose.Schema.Types.ObjectId
         }

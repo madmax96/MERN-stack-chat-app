@@ -67,7 +67,7 @@ customEvents.on('userJoinedChat',userJoinedChatEvent);
 customEvents.on('userLeftChat',userLeftChatEvent);
 customEvents.on('adminClosedChat',adminClosedChatEvent);
 
-wss.rooms = {}
+wss.rooms = {};
 
 wss.on('connection', function connection(ws,request) {
     ws.user=request.user;
@@ -76,7 +76,7 @@ wss.on('connection', function connection(ws,request) {
         console.log('client gone ' , e);
     });
 
-   ws.send(JSON.stringify({event:"newMessage",data:"test"}));
+  // ws.send(JSON.stringify({event:"newMessage",data:"test"}));
     ws.on('close',(e)=>{
         console.log('client close ' , e);
     });
@@ -92,3 +92,7 @@ wss.on('connection', function connection(ws,request) {
 //     }}));
 // }
 // },5000)
+module.exports={
+    httpServer:server,
+    webSocketServer:wss
+}

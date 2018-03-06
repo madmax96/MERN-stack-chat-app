@@ -25,15 +25,11 @@ let UserSchema = new mongoose.Schema({
     require: true,
     minlength: 6
   },
-  tokens: [{
-    token: {
-      type: String,
-      required: true
-    }
-  }],
+  tokens: {
+    type:[String]
+  },
   subscribedTo:{
       type:[String],
-      required:false,
       enum:['Sport','Celebrity','Politics','Movies','Songs']
   }
 });
@@ -47,14 +43,14 @@ let UserSchema = new mongoose.Schema({
 // };
 
 UserSchema.methods.generateAuthToken = function () {
-  let user = this;
-  const access = 'auth';
-  const token = jwt.sign({_id: user._id.toHexString()}, process.env.JWT_SECRET).toString();
 
-  user.tokens.push({token});
+  let user = this;
+  const token = jwt.sign({_id: user._id.toHexString()}, process.env.JWT_SECRET).toString();
+  user.tokens.push(token);
   return user.save().then(() => {
     return token;
   });
+
 };
 
 
@@ -70,7 +66,7 @@ UserSchema.statics.findByToken = function (token) {
 
   return User.findOne({
     '_id': decoded._id,
-    'tokens.token': token
+    'tokens': token
   });
 };
 
@@ -83,7 +79,6 @@ UserSchema.statics.findByCredentials = function (email, password) {
     }
 
     return new Promise((resolve, reject) => {
-   
       bcrypt.compare(password, user.password, (err, res) => {
         if (res) {
           resolve(user);
@@ -100,7 +95,7 @@ UserSchema.methods.removeToken = function (token) {
 
   return user.update({
     $pull: {
-      tokens: {token}
+      tokens:token
     }
   });
 };

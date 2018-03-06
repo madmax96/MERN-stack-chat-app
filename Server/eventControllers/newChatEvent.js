@@ -19,7 +19,7 @@ broadcast{
 const {ObjectID} = require("mongodb");
 const ChatRoom = require('./../models/ChatRoom');
 const Message = require('./../models/Message');
-module.exports = (data,clientSocket,WebSocketServer)=>{
+module.exports = (data,clientSocket,WebSocketServer) => {
     const user = clientSocket.user;
     //const {creator,isActive,group,title,maxNumOfUsers} = data;
     data.creator = user._id;
