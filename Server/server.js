@@ -68,30 +68,41 @@ customEvents.on('userLeftChat',userLeftChatEvent);
 customEvents.on('adminClosedChat',adminClosedChatEvent);
 
 wss.rooms = {};
-
+wss.sendMessageToRoom = function sendMessageToRoom (room,data){
+    const usersInGroup = wss.rooms[room];
+    console.log(room,data);
+    if(usersInGroup){
+        usersInGroup.forEach((user)=>{
+            user.send(JSON.stringify({event:'newMessage',data}));
+        })
+    }
+}
+wss.sendNotifToSubscriptionGroup = function sendNotifToSubscriptionGroup (group , data, creatorOfChat){
+    console.log(group,data);
+    this.clients.forEach(client => {
+        if(client !== creatorOfChat && client.user.subscribedTo.indexOf(group)!==-1){
+            client.send(JSON.stringify({event:'newChat',data:data}));
+        }
+    });
+}
 wss.on('connection', function connection(ws,request) {
     ws.user=request.user;
     ws.on('message', (message)=>customEvents.eventHandler(message,ws,wss));  
     ws.on('error',(e)=>{
         console.log('client gone ' , e);
     });
-
-  // ws.send(JSON.stringify({event:"newMessage",data:"test"}));
     ws.on('close',(e)=>{
         console.log('client close ' , e);
     });
+    ws.user.activeChats.forEach((chat)=>{
+        if(!wss.rooms[chat]){
+            wss.rooms[chat] = [ws];
+        }else{
+            wss.rooms[chat].push(ws);
+        }
+    });
 });
 
-// setTimeout(()=>{
-//     const client  =  new WebSocket('ws://localhost:3000/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTdkYmJjYjkzNjFkMDE1NTRiN2EzODYiLCJpYXQiOjE1MTgzNzAzOTB9.tdZtgXD2EtcoFKEuIzjiLlGhnDCH7knY8w-Cap2VE8Y');
-
-// client.onerror = (e)=>{console.log(e.message)};
-// client.onopen = ()=>{
-//     client.send(JSON.stringify({event:"newChat",data:{
-//         group:"Sport",title:"Real vs Barca",maxNumOfUsers:5
-//     }}));
-// }
-// },5000)
 module.exports={
     httpServer:server,
     webSocketServer:wss

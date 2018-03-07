@@ -18,7 +18,7 @@ constructor(props){
         selectedChat:null,
         messages:[]
         }
-        props.userData.personalChats.forEach(chat => {
+        props.userData.activeChats.forEach(chat => {
             this.state.personalChats[chat._id]={chat}
         });
 }
@@ -42,7 +42,8 @@ componentDidMount(){
 
     this.websocket.connect(this.props.token).then(()=>{
         console.log('success');
-        this.websocket.emmit('newMessage',{data:"data"})
+         //this.websocket.emmit('newMessage',{text:"testing",chat:'5aa055277025020678e04176'})
+        this.websocket.emmit('newChat',{group:"Sport",title:'asaaaaaaaaaaaaaaa' , maxNumOfUsers:6});
     }).catch((err)=>{
         console.log(err);
     })

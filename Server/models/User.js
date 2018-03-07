@@ -31,6 +31,9 @@ let UserSchema = new mongoose.Schema({
   subscribedTo:{
       type:[String],
       enum:['Sport','Celebrity','Politics','Movies','Songs']
+  },
+  activeChats:{
+    type:[mongoose.Schema.Types.ObjectId]
   }
 });
 
@@ -91,7 +94,7 @@ UserSchema.statics.findByCredentials = function (email, password) {
 };
 
 UserSchema.methods.removeToken = function (token) {
-  var user = this;
+  let user = this;
 
   return user.update({
     $pull: {

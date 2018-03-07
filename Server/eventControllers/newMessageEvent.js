@@ -3,25 +3,30 @@
 
 Receive{
     text:String,
-    chatId:ObjectId
+    chat:ObjectId
 }
 
 broadcast{
     text:String,
     time:timestamp,
     creator:ObjectId
-    chatId:ObjectId
+    chat:ObjectId
 }
 */
 
 
 const ChatRoom = require('./../models/ChatRoom');
 const Message = require('./../models/Message');
-module.exports = (data,ws,wss)=>{
+module.exports = (data,clientSocket,wss)=>{
     
-    console.log(data);
+    console.log('ses', data);
+    data.creator = clientSocket.user._id;
+    const newMessage = new Message(data);
+    newMessage.save().then((message)=>{
+        message.time = message._id.getTimestamp();
+        wss.sendMessageToRoom(data.chat,message);
+    }).catch((e)=>{
+        console.log(e);
+    });
 
-    // WebsocketServer.broadcast.toChat('chatId',dataToSend);
-
-    //wss.broadcast.toChat(chatId)
 }

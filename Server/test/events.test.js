@@ -18,7 +18,6 @@ beforeEach(function(done){
                 resolve();
             }
             socket.onerror = function(e){
-
                 reject(e);
             }
        }));   
@@ -39,7 +38,7 @@ afterEach(function(){
 describe('testing',()=>{
     
     it("should create users in database",()=>{
-       
         expect(1+1).toBe(2);
+        
     })
 })

@@ -11,10 +11,6 @@ let MessageSchema = new mongoose.Schema({
         required:true,
         type:mongoose.Schema.Types.ObjectId
     },
-    date:{
-        required:true,
-        type:Number
-    },
     text:{
         required:true,
         type:String,

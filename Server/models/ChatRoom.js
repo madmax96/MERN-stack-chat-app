@@ -35,14 +35,7 @@ let ChatRoomSchema = new mongoose.Schema({
             required:false,
             type:mongoose.Schema.Types.ObjectId
         }
-    }],
-    messages:[{
-        message:{
-            type:mongoose.Schema.Types.ObjectId,
-            required:false
-        }
     }]
-
 });
 let ChatRoom = mongoose.model('ChatRoom', ChatRoomSchema);
 
