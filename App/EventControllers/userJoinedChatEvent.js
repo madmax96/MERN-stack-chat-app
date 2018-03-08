@@ -12,7 +12,7 @@ broadcast{
 }
 */
 
-export default (data,dispatch)=>{
-    
-    
-}
+export default (data, dispatch) => {
+
+
+};

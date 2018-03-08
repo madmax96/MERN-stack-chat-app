@@ -13,10 +13,10 @@ broadcast{
 */
 
 
-
 const ChatRoom = require('./../models/ChatRoom');
 const Message = require('./../models/Message');
-module.exports = (data,ws,wss)=>{
-    
-    
-}
+
+module.exports = (data, ws, wss) => {
+
+
+};

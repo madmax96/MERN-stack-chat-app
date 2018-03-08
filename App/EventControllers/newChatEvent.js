@@ -16,7 +16,6 @@ broadcast{
 
 */
 
-export default (data,setState)=>{
-    
-    console.log('new chat',data)
-}
+export default (data, setState) => {
+  console.log('new chat', data);
+};

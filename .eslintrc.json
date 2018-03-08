@@ -1,0 +1,15 @@
+{
+    "extends": "airbnb",
+    "env":{
+        "es6":true,
+        "browser":true,
+        "node":true,
+        "mocha":true,
+        "mongo":true
+    },
+    "rules":{
+        "linebreak-style": 1,
+        "no-underscore-dangle": 1,
+        "no-param-reassign": ["error", { "props": false }]
+    }
+}

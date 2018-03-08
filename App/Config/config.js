@@ -1,3 +1,3 @@
 export default {
-    url:"ws://localhost:3000"
-}
+  url: 'ws://localhost:3000',
+};
