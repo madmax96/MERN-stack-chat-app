@@ -29,8 +29,8 @@ const users = [{
   subscribedTo: ['Movies', 'Celebrity', 'Songs'],
 }];
 
-const populateUsers = function (done) {
-  this.timeout(3000);
+const populateUsers = function populateUsers(done) {
+  this.timeout(20000);
   User.remove({}).then(() => {
     const userOne = new User(users[0]).save();
     const userTwo = new User(users[1]).save();

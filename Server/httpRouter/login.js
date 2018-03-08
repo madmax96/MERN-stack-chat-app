@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
   User.findByCredentials(email, password).then(user => user.generateAuthToken().then((token) => {
     res.header('x-auth', token).send(user);
   })).catch(() => {
-    res.status(401).send();
+    res.status(400).send();
   });
 });
 

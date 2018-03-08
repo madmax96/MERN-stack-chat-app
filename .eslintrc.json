@@ -10,6 +10,7 @@
     "rules":{
         "linebreak-style": 1,
         "no-underscore-dangle": 1,
-        "no-param-reassign": ["error", { "props": false }]
+        "no-param-reassign": ["error", { "props": false }],
+        "consistent-return": 1
     }
 }
