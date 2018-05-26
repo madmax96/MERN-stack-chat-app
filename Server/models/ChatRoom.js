@@ -6,10 +6,6 @@ const ChatRoomSchema = new mongoose.Schema({
     required: true,
     type: mongoose.Schema.Types.ObjectId,
   },
-  isActive: {
-    type: Boolean,
-    default: true,
-  },
   group: {
     required: true,
     type: String,
@@ -28,7 +24,7 @@ const ChatRoomSchema = new mongoose.Schema({
   },
   users: [{
     userId: {
-      required: false,
+      required: true,
       type: mongoose.Schema.Types.ObjectId,
     },
     lastMessageSeen: {

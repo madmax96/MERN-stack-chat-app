@@ -32,14 +32,23 @@ const UserSchema = new mongoose.Schema({
     type: [String],
     enum: ['Sport', 'Celebrity', 'Politics', 'Movies', 'Songs'],
   },
-  activeChatRooms: {
-    type: [mongoose.Schema.Types.ObjectId],
-  },
+  ChatRooms:[{
+    
+    chatId:{
+      type:mongoose.Schema.Types.ObjectId,
+      required:true
+    },
+    isCreator:{
+      type:Boolean,
+      required:true
+    }
+  }]
 });
 
 // UserSchema.methods.toJSON = function () {
 //   let user = this;
 //   let userObject = user.toObject();
+//   //find all chat data , including unseen messages
 //   const _id = userObject._id;
 //   const email = userObject.email;
 //   return {_id,email};
@@ -79,11 +88,7 @@ UserSchema.statics.findByCredentials = function findByCredentials(email, passwor
 
     return new Promise((resolve, reject) => {
       bcrypt.compare(password, user.password, (err, res) => {
-        if (res) {
-          resolve(user);
-        } else {
-          reject();
-        }
+        res ? resolve(user) : reject();
       });
     });
   });

@@ -11,8 +11,6 @@ const CustomEvents = require('./eventControllers/CustomEvents');
 const newMessageEvent = require('./eventControllers/newMessageEvent');
 const newChatEvent = require('./eventControllers/newChatEvent');
 const userJoinedChatEvent = require('./eventControllers/userJoinedChatEvent');
-const userLeftChatEvent = require('./eventControllers/userLeftChatEvent');
-const adminClosedChatEvent = require('./eventControllers/adminClosedChatEvent');
 const { sendMessageToRoom, sendNotifToSubscriptionGroup } = require('./utils/senders');
 const User = require('./models/User');
 require('./database/connect');
@@ -20,17 +18,9 @@ require('./database/connect');
 const server = http.createServer(app);
 const publicPath = path.join(__dirname, '..', 'public');
 
-// app.use(function(req, res, next) {
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     res.setHeader('Access-Control-Allow-Credentials', 'true');
-//     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
-//     next();
-// });
-
 app.use(express.static(publicPath));
 app.use(bodyParser.json());
 app.use(httpRouter);
-
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(publicPath, 'index.html'));
@@ -63,10 +53,9 @@ const customEvents = new CustomEvents();
 customEvents.on('newMessage', newMessageEvent);
 customEvents.on('newChat', newChatEvent);
 customEvents.on('userJoinedChat', userJoinedChatEvent);
-customEvents.on('userLeftChat', userLeftChatEvent);
-customEvents.on('adminClosedChat', adminClosedChatEvent);
 
 wss.chatRooms = {};
+wss.subscriptionGroups = {};
 wss.sendMessageToRoom = sendMessageToRoom;
 wss.sendNotifToSubscriptionGroup = sendNotifToSubscriptionGroup;
 
@@ -79,17 +68,24 @@ wss.on('connection', (ws, request) => {
   ws.on('close', (e) => {
     console.log('client close ', e);
   });
-  ws.user.activeChatRooms.forEach((chat) => {
-    if (!wss.chatRooms[chat]) {
-      wss.chatRooms[chat] = [ws];
+  ws.user.ChatRooms.forEach((chat) => {
+    if (!wss.chatRooms[chat.chatId]) {
+      wss.chatRooms[chat.chatId] = [ws];
     } else {
-      wss.chatRooms[chat].push(ws);
+      wss.chatRooms[chat.chatId].push(ws);
     }
   });
+  ws.user.subscribedTo.forEach((group)=>{
+    if (!wss.subscriptionGroups[group]) {
+      wss.subscriptionGroups[group] = [ws];
+    } else {
+      wss.subscriptionGroups[group].push(ws);
+    }
+  })
 });
 
 module.exports = {
   httpServer: server,
-  webSocketServer: wss,
+  wss,
 };
 

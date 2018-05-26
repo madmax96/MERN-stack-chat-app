@@ -7,10 +7,10 @@ class CustomEvents {
     this.registeredEvents[event] = callback;
   }
   eventHandler(message, ws, wss) {
-    message = JSON.parse(message);
-    const handler = this.registeredEvents[message.event];
+    const parsedMessage = JSON.parse(message);
+    const handler = this.registeredEvents[parsedMessage.event];
     if (handler) {
-      handler(message.data, ws, wss);
+      handler(parsedMessage.data, ws, wss);
     }
   }
 }
