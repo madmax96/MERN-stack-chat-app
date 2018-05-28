@@ -5,22 +5,29 @@ function sendNotifToSubscriptionGroup(group, data, creatorOfChat) {
   //     client.send(JSON.stringify({ event: 'newChat', data }));
   //   }
   // });
-  this.subscriptionGroups[group].forEach((wsUserInstance)=>{
-    if (wsUserInstance !== creatorOfChat){
+  this.subscriptionGroups[group].forEach((wsUserInstance) => {
+    if (wsUserInstance !== creatorOfChat) {
       wsUserInstance.send(JSON.stringify({ event: 'newChat', data }));
     }
-  })
+  });
 }
 
-function sendMessageToRoom(room, data) {
+function sendAdminMessageToRoom(room, data, event) {
   const usersInGroup = this.chatRooms[room];
-  if (usersInGroup) {
-    usersInGroup.forEach((user) => {
-      //user is Ws Instance
-      user.send(JSON.stringify({ event: 'newMessage', data }));
-    });
-  }
+
+  usersInGroup.forEach((user) => {
+    // user is Ws Instance
+    user.send(JSON.stringify({ event, data }));
+  });
 }
 
+function sendUserMessageToRoom(room, data, event) {
+  const usersInGroup = this.chatRooms[room];
 
-module.exports = { sendNotifToSubscriptionGroup, sendMessageToRoom };
+  usersInGroup.forEach((user) => {
+    // user is Ws Instance
+    user.send(JSON.stringify({ event, data }));
+  });
+}
+
+module.exports = { sendNotifToSubscriptionGroup, sendUserMessageToRoom, sendAdminMessageToRoom };

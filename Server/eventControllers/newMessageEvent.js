@@ -10,18 +10,19 @@ broadcast{
     text:String,
     time:timestamp,
     creator:ObjectId
-    chat:ObjectId
+    chatId:ObjectId
+    _id:ObjectId
 }
 */
 const Message = require('./../models/Message');
 
 module.exports = (data, clientSocket, wss) => {
-  console.log('ses', data);
   data.creator = clientSocket.user._id;
   const newMessage = new Message(data);
   newMessage.save().then((message) => {
-    message.time = message._id.getTimestamp();
-    wss.sendMessageToRoom(data.chat, message);
+    const messageObject = message.toObject();
+    messageObject.time = message._id.getTimestamp();
+    wss.sendUserMessageToRoom(data.chatId, messageObject, 'newMessage');
   }).catch((e) => {
     console.log(e);
   });

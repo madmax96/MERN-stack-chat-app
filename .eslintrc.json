@@ -12,6 +12,8 @@
         "no-underscore-dangle": 1,
         "no-param-reassign": ["error", { "props": false }],
         "consistent-return": 1,
-        "no-unused-expressions":false
+        "no-unused-expressions":1,
+        "no-debugger":0,
+        "no-shadow": 0
     }
 }

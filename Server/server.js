@@ -11,7 +11,9 @@ const CustomEvents = require('./eventControllers/CustomEvents');
 const newMessageEvent = require('./eventControllers/newMessageEvent');
 const newChatEvent = require('./eventControllers/newChatEvent');
 const userJoinedChatEvent = require('./eventControllers/userJoinedChatEvent');
-const { sendMessageToRoom, sendNotifToSubscriptionGroup } = require('./utils/senders');
+const userSubscribeEvent = require('./eventControllers/userSubscribeEvent');
+const messageSeenEvent = require('./eventControllers/messageSeenEvent');
+const { sendUserMessageToRoom, sendNotifToSubscriptionGroup, sendAdminMessageToRoom } = require('./utils/senders');
 const User = require('./models/User');
 require('./database/connect');
 
@@ -53,14 +55,18 @@ const customEvents = new CustomEvents();
 customEvents.on('newMessage', newMessageEvent);
 customEvents.on('newChat', newChatEvent);
 customEvents.on('userJoinedChat', userJoinedChatEvent);
+customEvents.on('userSubscribeEvent', userSubscribeEvent);
+customEvents.on('messageSeenEvent', messageSeenEvent);
 
 wss.chatRooms = {};
 wss.subscriptionGroups = {};
-wss.sendMessageToRoom = sendMessageToRoom;
+wss.sendUserMessageToRoom = sendUserMessageToRoom;
+wss.sendAdminMessageToRoom = sendAdminMessageToRoom;
 wss.sendNotifToSubscriptionGroup = sendNotifToSubscriptionGroup;
 
 wss.on('connection', (ws, request) => {
   ws.user = request.user;
+
   ws.on('message', message => customEvents.eventHandler(message, ws, wss));
   ws.on('error', (e) => {
     console.log('client gone ', e);
@@ -75,13 +81,13 @@ wss.on('connection', (ws, request) => {
       wss.chatRooms[chat.chatId].push(ws);
     }
   });
-  ws.user.subscribedTo.forEach((group)=>{
+  ws.user.subscribedTo.forEach((group) => {
     if (!wss.subscriptionGroups[group]) {
       wss.subscriptionGroups[group] = [ws];
     } else {
       wss.subscriptionGroups[group].push(ws);
     }
-  })
+  });
 });
 
 module.exports = {

@@ -11,11 +11,13 @@ router.post('/', (req, res) => {
     res.status(400);
     return;
   }
-  User.findByCredentials(email, password).then(user => user.generateAuthToken().then((token) => {
-    res.header('x-auth', token).send(user);
-  })).catch(() => {
-    res.status(400).send();
-  });
+  User.findByCredentials(email, password)
+    .then(user => user.generateAuthToken()
+      .then((token) => {
+        res.header('x-auth', token).send(user);
+      })).catch(() => {
+      res.status(400).send();
+    });
 });
 
 module.exports = router;
