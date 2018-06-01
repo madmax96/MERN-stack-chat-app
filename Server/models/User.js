@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const ChatRoom = require('./ChatRoom');
+const Message = require('./Message');
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -37,21 +39,8 @@ const UserSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
-    isCreator: {
-      type: Boolean,
-      required: true,
-    },
   }],
 });
-
-// UserSchema.methods.toJSON = function () {
-//   let user = this;
-//   let userObject = user.toObject();
-//   //find all chat data , including unseen messages
-//   const _id = userObject._id;
-//   const email = userObject.email;
-//   return {_id,email};
-// };
 
 UserSchema.methods.generateAuthToken = function generateAuthToken() {
   const user = this;
@@ -84,12 +73,68 @@ UserSchema.statics.findByCredentials = function findByCredentials(email, passwor
     if (!user) {
       return Promise.reject();
     }
-
     return new Promise((resolve, reject) => {
       bcrypt.compare(password, user.password, (err) => {
         if (!err) {
           // find all info about user(all chats and messages)
-          resolve(user);
+          let userObject = user.toObject();
+          const {
+            email, name, subscribedTo, _id,
+          } = userObject;
+          const dataToSend = {
+            id: _id,
+            email,
+            name,
+            subscribedTo,
+            roomsData: {},
+          };
+
+          userObject.ChatRooms.forEach((room) => {
+            dataToSend.roomsData[room.chatId] = {};
+          });
+          // refactor this shit with async - await
+          const chatPromises = [];
+          const messagePromises = [];
+          userObject.ChatRooms.forEach((chatRoom) => {
+            const chatPromise = ChatRoom.findById(chatRoom.chatId);
+            const messagePromise = Message.find({ chatId: chatRoom.chatId });
+            chatPromises.push(chatPromise);
+            messagePromises.push(messagePromise);
+          });
+          Promise.all(chatPromises).then((results) => {
+            results.forEach((chat) => {
+              chat = chat.toObject();
+              // pull stupid __v from chat
+              const { __v, ...chatData } = chat;
+              chatData.users.forEach((user, i) => {
+                // pull embeded document _id which i dont need
+                const { _id, ...userData } = user;
+                chatData.users[i] = userData;
+              });
+              dataToSend.roomsData[chat._id] = {
+                ...chatData,
+                messages: [],
+              };
+            });
+            return Promise.all(messagePromises);
+          }).then((results) => {
+            results.forEach((result) => {
+              result.forEach((message) => {
+                message = message.toObject();
+                const { __v, chatId, ...messageData } = message;
+                messageData.time = message._id.getTimestamp().toString();
+                dataToSend.roomsData[chatId].messages.push(messageData);
+              });
+            });
+            // i need user Model object becaouse of getToken  method
+            userObject = {
+              user,
+              dataToSend,
+            };
+            resolve(userObject);
+          }).catch((error) => {
+            reject(error);
+          });
         } else {
           reject();
         }
@@ -107,7 +152,6 @@ UserSchema.methods.removeToken = function removeToken(token) {
     },
   });
 };
-
 
 UserSchema.pre('save', function preSave(next) {
   const user = this;

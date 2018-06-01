@@ -38,13 +38,13 @@ module.exports = (data, clientSocket, wss) => {
 
   const userUpdatePromise = User.findByIdAndUpdate(user._id, {
     $push: {
-      ChatRooms: { chatId: data.chatId, isCreator: false },
+      ChatRooms: { chatId: data.chatId },
     },
   }, { new: true });
 
   const chatUpdatePromise = ChatRoom.findByIdAndUpdate(data.chatId, {
     $push: {
-      users: { userId: user._id },
+      users: { userId: user._id, userName: user.name },
     },
   }, { new: true });
 
@@ -61,7 +61,7 @@ module.exports = (data, clientSocket, wss) => {
     } else {
       wss.chatRooms[data.chatId] = [clientSocket];
     }
-    wss.sendAdminMessageToRoom(messageObject.chatId, messageObject, 'userJoinedChat');
+    wss.sendMessageToRoom(messageObject.chatId, messageObject, 'userJoinedChat');
   }).catch((e) => {
     console.log(e.message);
   });

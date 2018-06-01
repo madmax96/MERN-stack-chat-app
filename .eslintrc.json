@@ -10,10 +10,11 @@
     "rules":{
         "linebreak-style": 1,
         "no-underscore-dangle": 1,
-        "no-param-reassign": ["error", { "props": false }],
+        "no-param-reassign": 1,
         "consistent-return": 1,
         "no-unused-expressions":1,
         "no-debugger":0,
-        "no-shadow": 0
+        "no-shadow": 0,
+        "eqeqeq":1
     }
 }

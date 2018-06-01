@@ -25,10 +25,10 @@ const users = [
     ChatRooms: [
       {
         chatId: chatOneId,
-        isCreator: true,
+
       }, {
         chatId: chatTwoId,
-        isCreator: false,
+
       }],
   },
   {
@@ -41,10 +41,10 @@ const users = [
     ChatRooms: [
       {
         chatId: chatOneId,
-        isCreator: false,
+
       }, {
         chatId: chatTwoId,
-        isCreator: true,
+
       }],
   },
   {
@@ -57,7 +57,7 @@ const users = [
     ChatRooms: [
       {
         chatId: chatTwoId,
-        isCreator: false,
+
       }],
   }];
 
@@ -83,9 +83,12 @@ const chats = [
     maxNumOfUsers: 5,
     users: [{
       userId: userTwoId,
+      userName: users[1].name,
     },
     {
       userId: userOneId,
+      userName: users[0].name,
+      lastMessageSeen: messageOneId,
     }],
   },
 
@@ -98,12 +101,16 @@ const chats = [
     users: [
       {
         userId: userOneId,
+        userName: users[0].name,
+
       },
       {
         userId: userThreeId,
+        userName: users[2].name,
       },
       {
         userId: userTwoId,
+        userName: users[1].name,
       },
     ],
   },
@@ -129,7 +136,6 @@ const messages = [
     chatId: chatOneId,
     text: 'testing seen message',
   },
-
 ];
 
 const populateMessages = function populateMessages(done) {

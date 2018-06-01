@@ -31,6 +31,6 @@ module.exports = (data, clientSocket, wss) => {
       messageId,
     };
     debugger;
-    wss.sendUserMessageToRoom(chatId, data, 'messageSeenEvent');
+    wss.sendMessageToRoom(chatId, data, 'messageSeenEvent');
   });
 };

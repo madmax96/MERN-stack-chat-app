@@ -13,7 +13,7 @@ const newChatEvent = require('./eventControllers/newChatEvent');
 const userJoinedChatEvent = require('./eventControllers/userJoinedChatEvent');
 const userSubscribeEvent = require('./eventControllers/userSubscribeEvent');
 const messageSeenEvent = require('./eventControllers/messageSeenEvent');
-const { sendUserMessageToRoom, sendNotifToSubscriptionGroup, sendAdminMessageToRoom } = require('./utils/senders');
+const { sendMessageToRoom, sendNotifToSubscriptionGroup } = require('./utils/senders');
 const User = require('./models/User');
 require('./database/connect');
 
@@ -60,8 +60,7 @@ customEvents.on('messageSeenEvent', messageSeenEvent);
 
 wss.chatRooms = {};
 wss.subscriptionGroups = {};
-wss.sendUserMessageToRoom = sendUserMessageToRoom;
-wss.sendAdminMessageToRoom = sendAdminMessageToRoom;
+wss.sendMessageToRoom = sendMessageToRoom;
 wss.sendNotifToSubscriptionGroup = sendNotifToSubscriptionGroup;
 
 wss.on('connection', (ws, request) => {

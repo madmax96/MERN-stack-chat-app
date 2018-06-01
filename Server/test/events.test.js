@@ -75,7 +75,7 @@ describe('tests for events', () => {
       });
       promises.push(promise);
     });
-    
+
     Promise.all(promises).then(() => done()).catch(e => done(e));
 
   })
@@ -99,21 +99,20 @@ describe('tests for events', () => {
     }));
     setTimeout(()=>{
       const promise1 = User.findById(users[0]._id).then((user)=>{
-      
+
         expect(user.subscribedTo).toContain('Celebrity');
       })
       const promise2 = User.findById(users[1]._id).then((user)=>{
-        
+
         expect(user.subscribedTo.includes('Celebrity')).toBe(false);
       })
-  
+
       Promise.all([promise1,promise2])
       .then(()=>done())
       .catch((e)=>done(e));
 
     },1000)
   })
-
 
 it('should send messageSeenEvent successfully' , function(done){
     this.timeout(5000);
@@ -125,8 +124,8 @@ it('should send messageSeenEvent successfully' , function(done){
       }
     }));
     let promises = [];
-    //we expect every one of 3 users to receive notif 
-    //becaouse we added User 3 to chat one in User joined chat test 
+    //we expect every one of 3 users to receive notif
+    //becaouse we added User 3 to chat one in User joined chat test
     sockets.forEach((socket,i) => {
         const promise = new Promise((resolve) => {
           socket.onmessage = (message) => {
@@ -142,7 +141,6 @@ it('should send messageSeenEvent successfully' , function(done){
         promises.push(promise);
     }
     );
-    console.log(sockets[2].onmessage);
     Promise.all(promises).then(() => done()).catch(e => done(e));
 
   })

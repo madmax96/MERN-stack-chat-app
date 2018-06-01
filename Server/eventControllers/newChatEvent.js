@@ -24,11 +24,15 @@ module.exports = (data, clientSocket, wss) => {
   const { user } = clientSocket;
 
   data.creator = user._id;
+  data.users = [{
+    userId: user._id,
+    userName: user.name,
+  }];
   const newChatRoom = new ChatRoom(data);
   newChatRoom.save().then((chatData) => {
     User.findByIdAndUpdate(data.creator, {
       $push: {
-        ChatRooms: { chatId: chatData._id, isCreator: true },
+        ChatRooms: { chatId: chatData._id },
       },
     }, { new: true }).then(() => {
       data.chatId = chatData._id;

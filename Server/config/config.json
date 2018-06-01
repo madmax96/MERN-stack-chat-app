@@ -1,6 +1,6 @@
 {
     "test": {
-      "PORT": 8080,
+      "PORT": 3001,
       "MONGODB_URI": "mongodb://madmax:madmax@ds157538.mlab.com:57538/react-chat-test",
       "JWT_SECRET": "65s4dfs65d4fsf"
     },

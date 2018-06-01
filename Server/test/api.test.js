@@ -1,10 +1,14 @@
 const { httpServer } = require('./../server');
 const expect = require('expect');
 const request = require('supertest');
-const { users, populateUsers } = require('./seed.js');
+const {
+  users, chats, messages, populateUsers, populateChats, populateMessages,
+} = require('./seed.js');
 const User = require('../models/User.js');
 
 beforeEach(populateUsers);
+beforeEach(populateChats);
+beforeEach(populateMessages);
 
 describe('POST /register', () => {
   it('should create a user', (done) => {
@@ -64,8 +68,60 @@ describe('POST login', () => {
       .expect(200)
       .expect((res) => {
         expect(res.headers['x-auth']).toBeDefined();
-        expect(res.body._id).toBeDefined();
+        expect(res.body.id).toBe(users[0]._id.toHexString());
         expect(res.body.email).toBe(email);
+        expect(res.body.name).toBe('User 1');
+        expect(res.body.subscribedTo).toEqual(users[0].subscribedTo);
+        const expectedRoomsData = {
+          [chats[0]._id]: {
+            _id: chats[0]._id.toHexString(),
+            creator: chats[0].creator.toHexString(),
+            group: chats[0].group,
+            maxNumOfUsers: chats[0].maxNumOfUsers,
+            messages: [{
+              _id: messages[0]._id.toHexString(),
+              creator: users[1]._id.toHexString(),
+              text: messages[0].text,
+              time: `${messages[0]._id.getTimestamp()}`,
+            }],
+            title: chats[0].title,
+            users: [
+              {
+                userId: users[1]._id.toHexString(),
+                userName: users[1].name,
+              },
+              {
+                userId: users[0]._id.toHexString(),
+                userName: users[0].name,
+                lastMessageSeen: messages[0]._id.toHexString(),
+              },
+            ],
+          },
+          [chats[1]._id]: {
+            _id: chats[1]._id.toHexString(),
+            creator: chats[1].creator.toHexString(),
+            group: chats[1].group,
+            maxNumOfUsers: chats[1].maxNumOfUsers,
+            messages: [],
+            title: chats[1].title,
+            users: [
+              {
+                userId: users[0]._id.toHexString(),
+                userName: users[0].name,
+
+              },
+              {
+                userId: users[2]._id.toHexString(),
+                userName: users[2].name,
+              },
+              {
+                userId: users[1]._id.toHexString(),
+                userName: users[1].name,
+              },
+            ],
+          },
+        };
+        expect(res.body.roomsData).toEqual(expectedRoomsData);
       })
       .end((err, res) => {
         if (err) {

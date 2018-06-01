@@ -22,7 +22,7 @@ module.exports = (data, clientSocket, wss) => {
   newMessage.save().then((message) => {
     const messageObject = message.toObject();
     messageObject.time = message._id.getTimestamp();
-    wss.sendUserMessageToRoom(data.chatId, messageObject, 'newMessage');
+    wss.sendMessageToRoom(data.chatId, messageObject, 'newMessage');
   }).catch((e) => {
     console.log(e);
   });

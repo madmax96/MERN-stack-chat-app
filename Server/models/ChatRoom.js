@@ -27,6 +27,10 @@ const ChatRoomSchema = new mongoose.Schema({
       required: true,
       type: mongoose.Schema.Types.ObjectId,
     },
+    userName: {
+      type: String,
+      required: true,
+    },
     lastMessageSeen: {
       required: false,
       type: mongoose.Schema.Types.ObjectId,
