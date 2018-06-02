@@ -9,11 +9,19 @@ function sendNotifToSubscriptionGroup(group, data, creatorOfChat) {
 
 function sendMessageToRoom(room, data, event) {
   const usersInGroup = this.chatRooms[room];
-
   usersInGroup.forEach((user) => {
     // user is Ws Instance
     user.send(JSON.stringify({ event, data }));
   });
 }
 
-module.exports = { sendNotifToSubscriptionGroup, sendMessageToRoom };
+function removeUserFromGlobalRooms(ws) {
+  ws.user.ChatRooms.forEach((chat) => {
+    this.chatRooms[chat.chatId] = this.chatRooms[chat.chatId].filter(user => user != ws);
+  });
+  ws.user.subscribedTo.forEach((group) => {
+    this.subscriptionGroups[group] = this.subscriptionGroups[group].filter(user => user != ws);
+  });
+}
+
+module.exports = { sendNotifToSubscriptionGroup, sendMessageToRoom, removeUserFromGlobalRooms };

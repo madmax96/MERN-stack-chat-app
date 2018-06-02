@@ -13,7 +13,11 @@ const newChatEvent = require('./eventControllers/newChatEvent');
 const userJoinedChatEvent = require('./eventControllers/userJoinedChatEvent');
 const userSubscribeEvent = require('./eventControllers/userSubscribeEvent');
 const messageSeenEvent = require('./eventControllers/messageSeenEvent');
-const { sendMessageToRoom, sendNotifToSubscriptionGroup } = require('./utils/senders');
+
+const logoutEvent = require('./eventControllers/logoutEvent');
+const { removeUserFromGlobalRooms } = require('./utils');
+
+const { sendMessageToRoom, sendNotifToSubscriptionGroup } = require('./utils');
 const User = require('./models/User');
 require('./database/connect');
 
@@ -41,7 +45,7 @@ const wss = new WebSocket.Server({
       if (!user) {
         callback(false, 401);
       }
-
+      user.currentToken = token;
       info.req.user = user;
 
       callback(true, 200);
@@ -57,22 +61,25 @@ customEvents.on('newChat', newChatEvent);
 customEvents.on('userJoinedChat', userJoinedChatEvent);
 customEvents.on('userSubscribeEvent', userSubscribeEvent);
 customEvents.on('messageSeenEvent', messageSeenEvent);
+customEvents.on('logoutEvent', logoutEvent);
 
 wss.chatRooms = {};
 wss.subscriptionGroups = {};
 wss.sendMessageToRoom = sendMessageToRoom;
 wss.sendNotifToSubscriptionGroup = sendNotifToSubscriptionGroup;
+wss.removeUserFromGlobalRooms = removeUserFromGlobalRooms;
+
 
 wss.on('connection', (ws, request) => {
   ws.user = request.user;
-
   ws.on('message', message => customEvents.eventHandler(message, ws, wss));
-  ws.on('error', (e) => {
-    console.log('client gone ', e);
+  ws.on('error', () => {
+    wss.removeUserFromGlobalRooms(ws);
   });
-  ws.on('close', (e) => {
-    console.log('client close ', e);
+  ws.on('close', () => {
+    wss.removeUserFromGlobalRooms(ws);
   });
+
   ws.user.ChatRooms.forEach((chat) => {
     if (!wss.chatRooms[chat.chatId]) {
       wss.chatRooms[chat.chatId] = [ws];

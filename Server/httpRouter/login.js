@@ -40,7 +40,7 @@ router.post('/', (req, res) => {
         }
 
       */
-        debugger;
+
         res.header('x-auth', token).send(dataToSend);
       })).catch(() => {
       res.status(400).send();

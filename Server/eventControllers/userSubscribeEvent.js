@@ -4,15 +4,13 @@ Receive{
     groupName:String,
     subscribe:Boolean
 }
-
 broadcast{
-
 }
 */
 const User = require('./../models/User');
 
 
-module.exports = (data, clientSocket, wss) => {
+module.exports = (data, clientSocket) => {
   const { user } = clientSocket;
   const { groupName } = data;
   let updatePromise;
@@ -30,7 +28,7 @@ module.exports = (data, clientSocket, wss) => {
     }, { new: true });
   }
 
-  updatePromise.then((updatedUser) => {
+  updatePromise.then(() => {
     // emit subscription confirm event
   });
 };

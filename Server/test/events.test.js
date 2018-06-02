@@ -144,4 +144,21 @@ it('should send messageSeenEvent successfully' , function(done){
     Promise.all(promises).then(() => done()).catch(e => done(e));
 
   })
+
+  it('should logout user successfully' , function(done){
+    this.timeout(5000);
+    sockets[0].send(JSON.stringify({
+      event:'logoutEvent'
+    }));
+    let socket = sockets[0];
+    new Promise((resolve) => {
+          socket.onmessage = (message) => {
+            expect(typeof message.data).toBe('string');
+            const parsedData = JSON.parse(message.data);
+            expect(parsedData.event).toBe('logoutConfirmation');
+            expect( parsedData.data.status).toBe(true);
+            resolve();
+          };
+        }).then(()=>done());
+  })
 });
