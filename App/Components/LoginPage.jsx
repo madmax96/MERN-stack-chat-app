@@ -10,61 +10,85 @@ export default class LoginPage extends React.Component {
     this.state = {
       email: '',
       password: '',
-      passwordError: '',
-      authError: '',
+      error: '',
     };
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.startLogin = this.startLogin.bind(this);
   }
 
+  handleInputChange(event) {
+    const { target } = event;
+    const { value, name } = target;
 
-  onEmailChange(e) {
-    const email = e.target.value;
-    this.setState({ email });
+    this.setState({
+      [name]: value,
+    });
   }
-
-  onPasswordChange(e) {
-    const password = e.target.value;
-    this.setState({ password });
-  }
-
   startLogin(e) {
     e.preventDefault();
-    const email = this.state.email;
-    const password = this.state.password;
+    const { email, password } = this.state;
     if (password.length < 6) {
-      this.setState({ passwordError: 'Password must have minimum 6 characters' });
+      this.setState({ error: 'Invalid credentials! Login failed' });
       return;
     }
     axios.post('/login', { email, password })
       .then((response) => {
-        console.log(response);
         const token = response.headers['x-auth'];
         localStorage.setItem('x-auth', token);
-        // if login successfull
-        ReactDOM.render(<Home token={token} userData={response.data} />, document.getElementById('react-app'));
+        ReactDOM.render(
+          <Home token={token} userData={response.data} />,
+          document.getElementById('react-app'),
+        );
       })
       .catch((err) => {
-        console.log(err);
-        this.setState({ authError: 'Wrong email or password' });
+        if (err.response.status >= 500) {
+          this.setState({ error: 'Our service is down.Please try later' });
+        } else {
+          this.setState({ error: 'Invalid credentials! Login failed' });
+        }
       });
   }
 
-
   render() {
+    let errorBox;
+    if (this.state.error) {
+      errorBox = (
+        <div className="alert alert-danger" role="alert">
+          {this.state.error}
+        </div>);
+    }
     return (
-      <div>
-        <h1 className="test">Login Page</h1>
-        <p>{this.state.authError}</p>
-        <form onSubmit={this.startLogin}>
-          <div>
-            <input type="email" name="email" value={this.state.email} onChange={this.onEmailChange} />
-          </div>
-          <div>
-            <input type="password" name="password" value={this.state.password} onChange={this.onPasswordChange} />
-            <span>{this.state.passwordError}</span>
-          </div>
-          <button>Log in</button>
-        </form>
-        <Link to="/register">Register</Link>
+      <div className="row row-align_center full-height">
+        <div className="col-1/4 text-center">
+          <form onSubmit={this.startLogin}>
+            <img className="mb-4" src="" alt="" width="72" height="72" />
+            <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
+            {errorBox}
+            <label htmlFor="inputEmail" className="sr-only">Email address</label>
+            <input
+              onChange={this.handleInputChange}
+              id="inputEmail"
+              className="form-control"
+              placeholder="Email address"
+              required="true"
+              type="email"
+              name="email"
+            />
+            <label htmlFor="inputPassword" className="sr-only">Password</label>
+            <input
+              onChange={this.handleInputChange}
+              id="inputPassword"
+              className="form-control"
+              placeholder="Password"
+              required="true"
+              type="password"
+              name="password"
+            />
+            <button className="btn btn-lg btn-primary btn-block margin-top-small" type="submit">Sign in</button>
+            <p className="mt-5 mb-3 text-muted">© 2017-2018</p>
+          </form>
+          <Link to="/register" href="/register" className="btn btn-success">Register</Link>
+        </div>
       </div>
     );
   }

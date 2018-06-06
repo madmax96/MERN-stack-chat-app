@@ -1,0 +1,25 @@
+*,
+*::after,
+*::before{
+    margin:0;
+    padding: 0;
+    box-sizing: inherit;
+}
+html{
+//     font-size: 62.5%; /* 10px*/
+//     @include respond(1260px){
+//         font-size: 50%;
+//     }
+//   @include respond(950px){
+//     font-size: 44%;
+//   }
+}
+body{
+    box-sizing: border-box;
+    height: 100vh;
+    max-height: 100vh;
+}
+::selection{
+    background-color:$color-primary;
+    color:white;
+}

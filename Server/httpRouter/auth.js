@@ -8,7 +8,9 @@ router.get('/', (req, res) => {
     if (!user) {
       res.status(404);
     } else {
-      res.send(user);
+      return User.getUserData(user.toObject()).then((dataToSend) => {
+        res.send(dataToSend);
+      });
     }
   }).catch(() => {
     res.status(400).send();

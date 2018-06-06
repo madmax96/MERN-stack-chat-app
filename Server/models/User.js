@@ -74,58 +74,12 @@ UserSchema.statics.findByCredentials = function findByCredentials(email, passwor
       return Promise.reject();
     }
     return new Promise((resolve, reject) => {
-      bcrypt.compare(password, user.password, (err) => {
-        if (!err) {
+      bcrypt.compare(password, user.password, (err, res) => {
+        if (res) {
           // find all info about user(all chats and messages)
           let userObject = user.toObject();
-          const {
-            email, name, subscribedTo, _id,
-          } = userObject;
-          const dataToSend = {
-            id: _id,
-            email,
-            name,
-            subscribedTo,
-            roomsData: {},
-          };
 
-          userObject.ChatRooms.forEach((room) => {
-            dataToSend.roomsData[room.chatId] = {};
-          });
-          // refactor this shit with async - await
-          const chatPromises = [];
-          const messagePromises = [];
-          userObject.ChatRooms.forEach((chatRoom) => {
-            const chatPromise = ChatRoom.findById(chatRoom.chatId);
-            const messagePromise = Message.find({ chatId: chatRoom.chatId });
-            chatPromises.push(chatPromise);
-            messagePromises.push(messagePromise);
-          });
-          Promise.all(chatPromises).then((results) => {
-            results.forEach((chat) => {
-              chat = chat.toObject();
-              // pull stupid __v from chat
-              const { __v, ...chatData } = chat;
-              chatData.users.forEach((user, i) => {
-                // pull embeded document _id which i dont need
-                const { _id, ...userData } = user;
-                chatData.users[i] = userData;
-              });
-              dataToSend.roomsData[chat._id] = {
-                ...chatData,
-                messages: [],
-              };
-            });
-            return Promise.all(messagePromises);
-          }).then((results) => {
-            results.forEach((result) => {
-              result.forEach((message) => {
-                message = message.toObject();
-                const { __v, chatId, ...messageData } = message;
-                messageData.time = message._id.getTimestamp().toString();
-                dataToSend.roomsData[chatId].messages.push(messageData);
-              });
-            });
+          User.getUserData(userObject).then((dataToSend) => {
             // i need user Model object becaouse of getToken  method
             userObject = {
               user,
@@ -140,6 +94,60 @@ UserSchema.statics.findByCredentials = function findByCredentials(email, passwor
         }
       });
     });
+  });
+};
+
+
+UserSchema.statics.getUserData = function getUserData(userObject) {
+  const {
+    email, name, subscribedTo, _id,
+  } = userObject;
+  const dataToSend = {
+    id: _id,
+    email,
+    name,
+    subscribedTo,
+    roomsData: {},
+  };
+
+  userObject.ChatRooms.forEach((room) => {
+    dataToSend.roomsData[room.chatId] = {};
+  });
+  // refactor this shit with async - await
+  const chatPromises = [];
+  const messagePromises = [];
+  userObject.ChatRooms.forEach((chatRoom) => {
+    const chatPromise = ChatRoom.findById(chatRoom.chatId);
+    const messagePromise = Message.find({ chatId: chatRoom.chatId });
+    chatPromises.push(chatPromise);
+    messagePromises.push(messagePromise);
+  });
+  return Promise.all(chatPromises).then((results) => {
+    results.forEach((chat) => {
+      chat = chat.toObject();
+      // pull stupid __v from chat
+      const { __v, ...chatData } = chat;
+      chatData.users.forEach((user, i) => {
+        // pull embeded document _id which i dont need
+        const { _id, ...userData } = user;
+        chatData.users[i] = userData;
+      });
+      dataToSend.roomsData[chat._id] = {
+        ...chatData,
+        messages: [],
+      };
+    });
+    return Promise.all(messagePromises);
+  }).then((results) => {
+    results.forEach((result) => {
+      result.forEach((message) => {
+        message = message.toObject();
+        const { __v, chatId, ...messageData } = message;
+        messageData.time = message._id.getTimestamp().toString();
+        dataToSend.roomsData[chatId].messages.push(messageData);
+      });
+    });
+    return dataToSend;
   });
 };
 

@@ -4,9 +4,9 @@
   "description": "Epos projekat",
   "main": "index.js",
   "scripts": {
-    "dev-server": "webpack-dev-server",
+    "dev-server": "webpack-dev-server --mode=development",
     "build-dev": "webpack",
-    "build-prod": "webpack -p --env production",
+    "build-prod": "webpack -p --env production --mode=production",
     "test-server": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha Server/test/index.test.js",
     "test-debug": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha debug Server/test/index.test.js"
   },
@@ -26,6 +26,7 @@
     "babel-preset-react": "^6.24.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "bootstrap": "^4.1.1",
     "express": "^4.16.3",
     "history": "^4.7.2",
     "jsonwebtoken": "^8.2.1",
@@ -52,13 +53,14 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.8.2",
     "expect": "^23.0.0",
-    "extract-text-webpack-plugin": "^3.0.2",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "mocha": "^5.2.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
     "style-loader": "^0.21.0",
     "supertest": "^3.1.0",
     "webpack": "^4.8.3",
+    "webpack-cli": "^3.0.1",
     "webpack-dev-server": "^3.1.4"
   }
 }

@@ -1,3 +1,10 @@
-.test{
-    color:red;
-}
+@import "abstract/mixins";
+@import "abstract/variables";
+
+@import "base/base";
+@import "base/animations";
+@import "base/utils";
+@import "base/typography";
+
+@import "layout/grid";
+

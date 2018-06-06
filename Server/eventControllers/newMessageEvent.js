@@ -1,6 +1,4 @@
 /*
-
-
 Receive{
     text:String,
     chatId:ObjectId

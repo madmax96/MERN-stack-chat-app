@@ -6,79 +6,114 @@ export default class RegisterPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: '',
+      userName: '',
       email: '',
       password: '',
       passwordError: '',
       nameError: '',
-      message: '',
     };
-    this.onEmailChange = this.onEmailChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.startRegister = this.startRegister.bind(this);
   }
 
-  onEmailChange(e) {
-    const email = e.target.value;
-    this.setState({ email });
-  }
+  handleInputChange(event) {
+    const { target } = event;
+    const { value, name } = target;
 
-  onPasswordChange(e) {
-    const password = e.target.value;
-    this.setState({ password });
-  }
-  onNameChange(e) {
-    const name = e.target.value;
-    this.setState({ name });
+    this.setState({
+      [name]: value,
+    });
   }
 
   startRegister(e) {
     e.preventDefault();
-    const email = this.state.email;
-    const password = this.state.password;
-    const name = this.state.name;
+    const { email, password, userName } = this.state;
     let errors = false;
+
     if (password.length < 6) {
-      this.setState({ passwordError: 'Password must have minimum 6 characters' });
+      this.setState(() => ({ passwordError: 'Password must have minimum 6 characters' }));
       errors = true;
+    } else {
+      this.setState(() => ({ passwordError: '' }));
     }
 
-    if (name.length < 6) {
-      this.setState({ nameError: 'Must be a valid name' });
+    if (userName.length < 3) {
+      this.setState(() => ({ nameError: 'Must be a valid name' }));
       errors = true;
+    } else {
+      this.setState(() => ({ nameError: '' }));
     }
     if (!errors) {
-      axios.post('/register', { name, email, password })
-        .then((response) => {
-          console.log(response);
-          this.setState({ message: 'Registration successfull.You can now log in' });
+      axios.post('/register', { name: userName, email, password })
+        .then(() => {
+          this.setState(() => ({
+            message: 'Registration successfull.You can now log in',
+            passwordError: '',
+            nameError: '',
+          }));
         })
         .catch((err) => {
-          console.log(err);
-          this.setState({ message: 'Email already in use' });
+          if (err.response.status >= 500) {
+            this.setState({ message: 'Our service is down! Please try again later' });
+          } else {
+            this.setState({ message: 'Email is already in use' });
+          }
         });
     }
   }
 
 
   render() {
+    let messageBox;
+    if (this.state.message) {
+      messageBox = (
+        <div className="alert alert-info" role="alert">
+          {this.state.message}
+        </div>);
+    }
     return (
-      <div>
-        <h1 className="test">Login Page</h1>
-        <p>{this.state.message}</p>
-        <form onSubmit={this.startRegister}>
-          <div>
-            <input type="text" name="name" value={this.state.name} onChange={this.onNameChange} /><span>Your Name</span>
-            <span>{this.state.nameError}</span>
-          </div>
-          <div>
-            <input type="email" name="email" value={this.state.email} onChange={this.onEmailChange} /><span>Your Email</span>
-          </div>
-          <div>
-            <input type="password" name="password" value={this.state.password} onChange={this.onPasswordChange} /><span>Your password</span>
-            <span>{this.state.passwordError}</span>
-          </div>
-          <button>Register</button>
-        </form>
-        <Link to="/">Login</Link>
+      <div className="row row-align_center full-height">
+        <div className="col-1/3 text-center">
+
+          <form onSubmit={this.startRegister}>
+            <img className="mb-4" src="" alt="" width="72" height="72" />
+            <h1 className="h3 mb-3 font-weight-normal">Register</h1>
+            {messageBox}
+            <label htmlFor="inputUserName" className="sr-only">Name</label>
+            <input
+              onChange={this.handleInputChange}
+              id="inputUserName"
+              className="form-control"
+              placeholder="Your name"
+              required="true"
+              type="text"
+              name="userName"
+            /><span>{this.state.nameError}</span>
+            <label htmlFor="inputEmail" className="sr-only">Email address</label>
+            <input
+              onChange={this.handleInputChange}
+              id="inputEmail"
+              className="form-control"
+              placeholder="Email address"
+              required="true"
+              type="email"
+              name="email"
+            />
+            <label htmlFor="inputPassword" className="sr-only">Password</label>
+            <input
+              onChange={this.handleInputChange}
+              id="inputPassword"
+              className="form-control"
+              placeholder="Password"
+              required="true"
+              type="password"
+              name="password"
+            /><span>{this.state.passwordError}</span>
+            <button className="btn btn-lg btn-primary btn-block margin-top-small" type="submit">Register</button>
+            <p className="mt-5 mb-3 text-muted">© 2017-2018</p>
+          </form>
+          <Link to="/">  Go back to login </Link>
+        </div>
       </div>
     );
   }
