@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import Home from './Home';
+import Dashboard from './Dashboard';
 
 export default class LoginPage extends React.Component {
   constructor() {
@@ -36,7 +36,7 @@ export default class LoginPage extends React.Component {
         const token = response.headers['x-auth'];
         localStorage.setItem('x-auth', token);
         ReactDOM.render(
-          <Home token={token} userData={response.data} />,
+          <Dashboard token={token} userData={response.data} />,
           document.getElementById('react-app'),
         );
       })
