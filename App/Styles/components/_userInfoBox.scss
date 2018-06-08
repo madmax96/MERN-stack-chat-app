@@ -1,0 +1,39 @@
+.userInfoBox{
+    padding: 10px 0;
+    background-image: linear-gradient(to right,$color-tertiary-light,$color-tertiary-dark);
+    color:white;
+    font-size: 14px;
+    &__image{
+        font-size: 35px;
+    }
+
+    &__userName{
+        margin:0;
+    }
+
+    &__email{
+        margin:0;
+    }
+    &__notifs{
+        position: relative;
+        font-size: 35px;
+        transition: color .3s;
+        &:hover{
+           color: $color-tertiary-light;
+           cursor: pointer;
+        }
+        &__num{
+            padding: 1px 8px;
+            border-radius: 50%;
+            font-size: 15px;
+            font-weight: bold;
+            background-color: $color-red;
+            position: absolute;
+            right: 30px;
+            bottom: -2px;
+            color:white;
+        }
+    }
+
+
+}

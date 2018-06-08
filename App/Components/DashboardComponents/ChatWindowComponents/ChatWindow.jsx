@@ -1,7 +1,7 @@
 import React from 'react';
 import ChatWindowHeader from './ChatWindowHeader';
 import MessagesBox from './MessagesBox';
-// import SendMessageBar from './SendMessageBar';
+import SendMessageBar from './SendMessageBar';
 
 export default class ChatWindow extends React.Component {
   constructor(props) {
@@ -15,7 +15,7 @@ export default class ChatWindow extends React.Component {
       <div>
         <ChatWindowHeader />
         <MessagesBox />
-
+        <SendMessageBar />
       </div>
     );
   }

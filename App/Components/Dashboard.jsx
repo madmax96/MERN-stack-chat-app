@@ -6,13 +6,17 @@ import newMessageEvent from '../EventControllers/newMessageEvent';
 import newChatEvent from '../EventControllers/newChatEvent';
 import userJoinedChatEvent from '../EventControllers/userJoinedChatEvent';
 import Sidebar from './DashboardComponents/SidebarComponents/Sidebar';
-import MainWindow from './DashboardComponents/MainWindow';
+import OverviewWindow from './DashboardComponents/OverviewComponents/OverviewWindow';
+import ChatWindow from './DashboardComponents/ChatWindowComponents/ChatWindow';
+
 
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      chatWindow: false,
     };
+    this.showChatWindow = this.showChatWindow.bind(this);
   }
 
   componentDidMount() {
@@ -31,16 +35,24 @@ export default class Home extends React.Component {
   componentWillUnmount() {
     this.websocket.closeConnection();
   }
-
+  showChatWindow(chatId) {
+    this.setState(() => ({
+      chatWindow: chatId,
+    }));
+  }
   render() {
+    let window = <OverviewWindow />;
+    if (this.state.chatWindow) {
+      window = <ChatWindow chatData={{ data: 'data' }} />;
+    }
     return (
-      <div className="flex-container">
-        <div className="row">
+      <div className="flex-container full-height">
+        <div className="row full-height">
           <div className="col-1/4 row row-fluid-1/1 chat-sidebar">
-            <Sidebar />
+            <Sidebar onChatSelect={chatId => this.showChatWindow(chatId)} />
           </div>
           <div className="col-3/4">
-            <MainWindow />
+            {window}
           </div>
         </div>
       </div>

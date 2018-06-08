@@ -1,7 +1,7 @@
 {
-  "name": "epos",
+  "name": "mern-chat",
   "version": "1.0.0",
-  "description": "Epos projekat",
+  "description": "chat app with MERN stack using websocket",
   "main": "index.js",
   "scripts": {
     "dev-server": "webpack-dev-server --mode=development",
@@ -33,6 +33,7 @@
     "mongodb": "^3.1.0-beta4",
     "mongoose": "^5.1.2",
     "normalize.css": "^8.0.0",
+    "prop-types": "^15.6.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-router-dom": "^4.2.2",
