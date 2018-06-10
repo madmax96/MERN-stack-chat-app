@@ -1,0 +1,40 @@
+.chatInfoBox{
+    padding: 5px;
+    color:black;
+    border-bottom: 1px solid $color-grey-light-2;
+    &:hover{
+        background-color: $chat-box-hover;
+        cursor: pointer;
+    }
+    &__name{
+        
+    }
+    &__admin,&__group{
+        color: $color-tertiary-light;
+    }
+    &__group{
+        margin-right: 8px;
+    }
+    &__lastMessage{
+        color: $color-grey-dark-2;
+        font-size: 14px;
+        margin-left: 10px;
+    }
+    &__date{
+        color: $color-grey-dark-2;
+        font-size: 14px;
+       
+    }
+    &__messagesNum{
+        padding:3px;
+        border-radius: 50%;
+        background-color: $color-red;
+        width: 30%;
+        color: white;
+        margin: 0 auto;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+      
+    }
+} 

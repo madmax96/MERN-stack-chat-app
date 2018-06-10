@@ -1,3 +1,8 @@
 .sidebar{
-    background-image: linear-gradient(to right,$color-primary-light,$color-primary-dark);
+    // background-image: linear-gradient(to right,$color-primary-light,$color-primary-dark);
+    &__chatList{
+        height: 85vh;
+        overflow-x: auto;
+
+    }
 }

@@ -13,14 +13,13 @@ export default class Sidebar extends React.Component {
     return (
       <div className="sidebar">
         <UserInfoBox />
-        <h3 className="text-center">MyChats</h3>
-        <ChatInfoBox onClick={this.props.onChatSelect} />
-        <ChatInfoBox onClick={this.props.onChatSelect} />
-        <ChatInfoBox onClick={this.props.onChatSelect} />
-        <h3 className="text-center">OtherChats</h3>
-        <ChatInfoBox />
-        <ChatInfoBox />
-        <ChatInfoBox />
+        <div className="sidebar__chatList">
+          <ChatInfoBox onClick={this.props.onChatSelect} />
+          <ChatInfoBox onClick={this.props.onChatSelect} />
+          <ChatInfoBox onClick={this.props.onChatSelect} />
+          <ChatInfoBox />
+          <ChatInfoBox />
+        </div>
       </div>
     );
   }

@@ -3,6 +3,8 @@
     background-image: linear-gradient(to right,$color-tertiary-light,$color-tertiary-dark);
     color:white;
     font-size: 14px;
+    font-weight: bold;
+    height: 15vh;
     &__image{
         font-size: 35px;
     }
@@ -26,7 +28,6 @@
             padding: 1px 8px;
             border-radius: 50%;
             font-size: 15px;
-            font-weight: bold;
             background-color: $color-red;
             position: absolute;
             right: 30px;

@@ -19,6 +19,9 @@ body{
     height: 100vh;
     max-height: 100vh;
 }
+p{
+    margin: 0;
+}
 ::selection{
     background-color:$color-primary;
     color:white;
