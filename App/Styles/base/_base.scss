@@ -18,6 +18,9 @@ body{
     box-sizing: border-box;
     height: 100vh;
     max-height: 100vh;
+    background-image: url("/background.png");
+    background-repeat: repeat;
+    opacity: 0.95;
 }
 p{
     margin: 0;

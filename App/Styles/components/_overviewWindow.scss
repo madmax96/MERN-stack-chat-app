@@ -1,0 +1,27 @@
+.overviewWindow{
+    height: 100vh;
+    & .groups{
+        height: 15vh;
+        background-image: linear-gradient(to left,$color-tertiary-light,$color-tertiary-dark);
+
+    }
+    & .groups > *:hover{
+        background-color: rgba(0,0,0,.3);
+        
+    }
+    
+    & .content{
+        height: 85vh;
+        background-color: whitesmoke;
+    }
+    & .newChats{
+        overflow-x: auto;
+        height: 75vh;
+    }
+    & .makeChat{
+        height: 10vh; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

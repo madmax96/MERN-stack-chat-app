@@ -1,29 +1,21 @@
 import React from 'react';
-
+import UserPreview from '../UserPreview';
 
 export default () => (
-  <div className="joinChatBox text-center">
-    <div className="row row-space_between">
-      <span className="joinChatBox__group col-1/5">GroupName</span>
-      <span className="joinChatBox__date col-1/5">Date</span>
+  <div className="joinChatBox text-center margin-top-small">
+    <div className="row row-space_between align-center">
+      <span className="col-3/5 joinChatBox__group">
+        <span className="oi oi-globe" />
+        <span className="name">Group Name</span>
+      </span>
+      <span className="joinChatBox__date col-1/5">14.7.1996</span>
     </div>
-    <h4 className="joinChatBox__title margin-top-medium">Title title title</h4>
+    <h4 className="joinChatBox__title">Title title title</h4>
 
-    <div className="row row-space_evenly row-fluid-1/4 joinChatBox__users margin-top-medium">
-      <div>
-        <img src="#" alt="#" />
-        <span>UserName</span>
-      </div>
-      <div>
-        <img src="#" alt="#" />
-        <span>UserName</span>
-      </div>
-      <div>
-        <img src="#" alt="#" />
-        <span>UserName</span>
-      </div>
+    <div className="row  joinChatBox__admin">
+      <UserPreview admin />
     </div>
-    <p className="margin-top-medium">3 Spots Left</p>
-    <button className="margin-top-medium btn btn-success">JOIN</button>
+    <p className="">3 Spots Left</p>
+    <button className=" joinChatBox__joinBtn btn btn-success">JOIN</button>
   </div>
 );

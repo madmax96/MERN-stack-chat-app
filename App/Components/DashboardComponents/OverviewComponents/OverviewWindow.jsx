@@ -1,6 +1,6 @@
 import React from 'react';
-import Groups from './Groups';
-import NewChatsOverview from './NewChatsOverview';
+import Group from './Group';
+import JoinChatBox from './JoinChatBox';
 
 export default class OverviewWindow extends React.Component {
   constructor(props) {
@@ -11,9 +11,28 @@ export default class OverviewWindow extends React.Component {
 
   render() {
     return (
-      <div>
-        <Groups />
-        <NewChatsOverview />
+      <div className="overviewWindow">
+        <div className="groups row row-start">
+          <div className="col-1/5 flexCenter">
+            <Group />
+          </div>
+          <div className="col-1/5 flexCenter">
+            <Group />
+          </div>
+          <div className="col-1/5 flexCenter">
+            <Group />
+          </div>
+        </div>
+
+        <div className="content">
+          <div className="row row-fluid-2/9 row-space_evenly newChats">
+            <JoinChatBox /> <JoinChatBox /> <JoinChatBox /> <JoinChatBox /> <JoinChatBox />
+            <JoinChatBox /> <JoinChatBox /> <JoinChatBox /> <JoinChatBox /> <JoinChatBox />
+          </div>
+          <div className="makeChat">
+            <button className="btn btn-success">MAKE CHAT</button>
+          </div>
+        </div>
 
       </div>
     );

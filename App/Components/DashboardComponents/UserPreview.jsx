@@ -7,8 +7,8 @@ export default (props) => {
   }
   return (
     <div className="UserPreview">
-      <img src="#" alt="#" />
       {admin}
+      <span className="oi oi-person" />
       <span>User Name</span>
     </div>
 
