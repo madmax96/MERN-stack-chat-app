@@ -1,0 +1,7 @@
+.sendMessageBar{
+    height: 10vh;
+    background-image: linear-gradient(to right,$color-tertiary-light,$color-tertiary-dark);
+    &__input{
+        width:95%;
+    }
+}

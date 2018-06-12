@@ -29,11 +29,7 @@ export default class OverviewWindow extends React.Component {
             <JoinChatBox /> <JoinChatBox /> <JoinChatBox /> <JoinChatBox /> <JoinChatBox />
             <JoinChatBox /> <JoinChatBox /> <JoinChatBox /> <JoinChatBox /> <JoinChatBox />
           </div>
-          <div className="makeChat">
-            <button className="btn btn-success">MAKE CHAT</button>
-          </div>
         </div>
-
       </div>
     );
   }

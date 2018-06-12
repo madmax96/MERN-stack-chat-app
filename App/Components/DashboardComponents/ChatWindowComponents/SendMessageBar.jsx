@@ -8,11 +8,11 @@ export default class SendMessageBar extends React.Component {
   }
   render() {
     return (
-      <div className="sendMessageBar row">
-        <div className="col-7/8">
-          <input className="sendMessageBar__field" type="text" />
+      <div className="sendMessageBar row row-align_center">
+        <div className="col-7/8 row">
+          <input className="sendMessageBar__input" type="text" />
         </div>
-        <div className="col-1/8">
+        <div className="col-1/8 row">
           <button className="btn btn-info">
             Send
           </button>

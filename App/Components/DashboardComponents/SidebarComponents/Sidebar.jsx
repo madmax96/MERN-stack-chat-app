@@ -19,6 +19,11 @@ export default class Sidebar extends React.Component {
           <ChatInfoBox onClick={this.props.onChatSelect} />
           <ChatInfoBox />
           <ChatInfoBox />
+          <ChatInfoBox />
+          <ChatInfoBox />
+        </div>
+        <div className="sidebar__makeChat">
+          <button className="btn btn-success">MAKE NEW CHAT</button>
         </div>
       </div>
     );

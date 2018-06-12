@@ -1,0 +1,11 @@
+.chatWindowHeader{
+    height: 15vh;
+    background-image: linear-gradient(to left,$color-tertiary-light,$color-tertiary-dark);
+    color: white;
+    padding-left: 20px;
+    &__title{
+        font-weight: bold;
+        font-size: 24px;
+    }
+
+}

@@ -1,22 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import UserPreview from '../UserPreview';
 
 export default function Message(props) {
-  let messageClass = 'row row-start';
-  if (props.self) {
-    messageClass = 'row row-end';
-  }
-
   function messageContent() {
     const { message } = props;
     if (props.user) {
       return (
         <div className="row">
-          <div className="message__user col-1/4">
-            <img src="#" alt="#" className="message__user__image" />
+          <div className="message__user col-1/6 text-center">
+            <span className="oi oi-person" />
             <h5 className="message__user__name">{props.user.name}</h5>
           </div>
-          <div className="message__text col-3/4">
+          <div className="message__text col-5/6">
             {message}
           </div>
         </div>
@@ -24,7 +20,7 @@ export default function Message(props) {
     }
     return (
       <div className="row row-end">
-        <div className="message__text col-3/4">
+        <div className="message__text col-5/6">
           {message}
         </div>
       </div>
@@ -32,23 +28,28 @@ export default function Message(props) {
   }
 
   return (
-    <div className={`${messageClass} messageRow`}>
-      <div className="col-7/12 message">
 
-        {messageContent()}
+    <div className="message">
 
-        <div className="row row-end">
-          <span className="message__date col-1/7">{props.date}</span>
+      {messageContent()}
+
+      <div className="row">
+        <div className="col-6/7 row row-start"><span>Seen:</span>
+          <UserPreview />
+          <UserPreview />
+          <UserPreview />
+          <UserPreview />
         </div>
+        <span className="message__date col-1/7">{props.date}</span>
       </div>
     </div>
+
   );
 }
 
 Message.propTypes = {
   date: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
-  self: PropTypes.bool.isRequired,
   user: PropTypes.shape({
     name: PropTypes.string,
   }),

@@ -1,8 +1,16 @@
 .sidebar{
     // background-image: linear-gradient(to right,$color-primary-light,$color-primary-dark);
+   
     &__chatList{
-        height: 85vh;
+        height: 75vh;
         overflow-x: auto;
-        background-color: white;
+        background-color: rgba(255,255,255,.9)
+    }
+    &__makeChat{
+            height: 10vh; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
     }
 }

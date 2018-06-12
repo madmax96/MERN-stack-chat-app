@@ -12,16 +12,8 @@
     
     & .content{
         height: 85vh;
-        background-color: whitesmoke;
-    }
-    & .newChats{
+        background-color: rgba(245, 245, 245,.9);
         overflow-x: auto;
-        height: 75vh;
     }
-    & .makeChat{
-        height: 10vh; 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+   
 }
