@@ -9,7 +9,7 @@ export const history = createHistory();
 
 const AppRouter = () => (
   <Router history={history}>
-    <div className="flex-container">
+    <div className="flex-container white-background">
       <Switch>
         <Route path="/" component={LoginPage} exact />
         <Route path="/register" component={RegisterPage} />

@@ -103,15 +103,15 @@ UserSchema.statics.getUserData = function getUserData(userObject) {
     email, name, subscribedTo, _id,
   } = userObject;
   const dataToSend = {
-    id: _id,
+    userId: _id,
     email,
     name,
     subscribedTo,
-    roomsData: {},
+    chatsData: {},
   };
 
   userObject.ChatRooms.forEach((room) => {
-    dataToSend.roomsData[room.chatId] = {};
+    dataToSend.chatsData[room.chatId] = {};
   });
   // refactor this shit with async - await
   const chatPromises = [];
@@ -128,11 +128,11 @@ UserSchema.statics.getUserData = function getUserData(userObject) {
       // pull stupid __v from chat
       const { __v, ...chatData } = chat;
       chatData.users.forEach((user, i) => {
-        // pull embeded document _id which i dont need
+        // pull embeded document _id
         const { _id, ...userData } = user;
         chatData.users[i] = userData;
       });
-      dataToSend.roomsData[chat._id] = {
+      dataToSend.chatsData[chat._id] = {
         ...chatData,
         messages: [],
       };
@@ -144,7 +144,7 @@ UserSchema.statics.getUserData = function getUserData(userObject) {
         message = message.toObject();
         const { __v, chatId, ...messageData } = message;
         messageData.time = message._id.getTimestamp().toString();
-        dataToSend.roomsData[chatId].messages.push(messageData);
+        dataToSend.chatsData[chatId].messages.push(messageData);
       });
     });
     return dataToSend;

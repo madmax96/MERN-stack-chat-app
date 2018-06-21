@@ -4,6 +4,16 @@
     left:50%;
     transform:translate(-50%,-50%);
 }
+
+@mixin textBox($fontSize,$padding,$background){
+    padding: $padding;
+    background-image: $background;
+    font-size: $fontSize;
+    color: white;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
 @mixin respond($breakpoint){
 
     @media only screen and (max-width:$breakpoint) {@content;}

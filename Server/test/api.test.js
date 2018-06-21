@@ -68,13 +68,12 @@ describe('POST login', () => {
       .expect(200)
       .expect((res) => {
         expect(res.headers['x-auth']).toBeDefined();
-        expect(res.body.id).toBe(users[0]._id.toHexString());
+        expect(res.body.userId).toBe(users[0]._id.toHexString());
         expect(res.body.email).toBe(email);
         expect(res.body.name).toBe('User 1');
         expect(res.body.subscribedTo).toEqual(users[0].subscribedTo);
-        const expectedRoomsData = {
+        const expectedChatsData = {
           [chats[0]._id]: {
-            _id: chats[0]._id.toHexString(),
             creator: chats[0].creator.toHexString(),
             group: chats[0].group,
             maxNumOfUsers: chats[0].maxNumOfUsers,
@@ -121,7 +120,7 @@ describe('POST login', () => {
             ],
           },
         };
-        expect(res.body.roomsData).toEqual(expectedRoomsData);
+        expect(res.body.chatsData).toEqual(expectedChatsData);
       })
       .end((err, res) => {
         if (err) {

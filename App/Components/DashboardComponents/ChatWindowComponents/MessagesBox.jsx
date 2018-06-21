@@ -1,80 +1,71 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
 import Message from './Message';
 
-export default class MessagesBox extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
+export default function MessagesBox(props) {
+  let lastMessageUser;
+  let lastDate;
+  return (
+    <div className="messagesBox">
 
-  render() {
-    return (
-      <div className="messagesBox">
-        <h3 className="text-center day margin-bottom-small">Wednesday</h3>
-        <div className="row row-end" >
-          <div className="col-4/7">
-            <Message
-              user={{ name: 'madmax' }}
-              message="sicing elit. Repudiandae, quidem iste. Ea provident ipsum voluptatibus, qui nostrum accusantium
-                  dolorum, officia cumque sit nisi aspernatur? Suscipit a veniam illo placeat eveniet?"
+      {props.messages.map((message) => {
+          const className = props.userId === message.creator ? 'row-end' : 'row-start';
+          const seen = [];
+          const userIDs = Object.keys(props.users);
+         userIDs.forEach((userId) => {
+            if (props.users[userId].lastMessageSeen === message._id) {
+              seen.push(props.users[userId].userName);
+            }
+          });
+          const user = lastMessageUser === message.creator ? null :
+          { name: props.users[message.creator].userName };
+          lastMessageUser = message.creator;
+          const timestamp = new Date(message.time).getTime();
+          const date = moment(timestamp).format('YYYY-MM-DD');
+          const time = moment(timestamp).format('HH:mm:ss');
+          const dateHeader = date === lastDate ? null :
+            (
+              <p className="text-center margin-bottom-small margin-top-small">
+                <span className=" dateTextBox ">{date}
+                </span>
+              </p>);
+            lastDate = date;
+          return (
+            <div key={message._id}>
+              {dateHeader}
+              <div className={`row ${className}`}>
+                <div className={`col-4/7 row ${className}`}>
+                  <Message
+                    {...message}
+                    time={time}
+                    seen={seen}
+                    user={user}
+                  />
+                </div>
+              </div>
+            </div>
 
-              date="14.7.1996"
-            />
-          </div>
-        </div>
-
-        <div className="row row-end" >
-          <div className="col-4/7">
-            <Message
-              message="sicing elit. Repudiandae, quidem iste. Ea provident ipsum voluptatibus, qui nostrum accusantium
-                  dolorum, officia cumque sit nisi aspernatur? Suscipit a veniam illo placeat eveniet?"
-              date="14.7.1996"
-            />
-          </div>
-        </div>
-        <div className="row row-start" >
-          <div className="col-4/7">
-            <Message
-              user={{ name: 'user 1' }}
-              message="sicing elit. Repudiandae, quidem iste. Ea provident ipsum voluptatibus, qui nostrum accusantium
-                  dolorum, officia cumque sit nisi aspernatur? Suscipit a veniam illo placeat eveniet?"
-              date="14.7.1996"
-            />
-          </div>
-        </div>
-        <div className="row row-end" >
-          <div className="col-4/7">
-            <Message
-              user={{ name: 'madmax' }}
-              message="sicing elit. Repudiandae, quidem iste. Ea provident ipsum voluptatibus, qui nostrum accusantium
-                  dolorum, officia cumque sit nisi aspernatur? Suscipit a veniam illo placeat eveniet?"
-
-              date="14.7.1996"
-            />
-          </div>
-        </div>
-
-        <div className="row row-end" >
-          <div className="col-4/7">
-            <Message
-              message="sicing elit. Repudiandae, quidem iste. Ea provident ipsum voluptatibus, qui nostrum accusantium
-                  dolorum, officia cumque sit nisi aspernatur? Suscipit a veniam illo placeat eveniet?"
-              date="14.7.1996"
-            />
-          </div>
-        </div>
-        <div className="row row-start" >
-          <div className="col-4/7">
-            <Message
-              user={{ name: 'user 1' }}
-              message="sicing elit. Repudiandae, quidem iste. Ea provident ipsum voluptatibus, qui nostrum accusantium
-                  dolorum, officia cumque sit nisi aspernatur? Suscipit a veniam illo placeat eveniet?"
-              date="14.7.1996"
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
+        );
+      })
+    }
+    </div>
+  );
 }
+
+
+MessagesBox.propTypes = {
+  messages: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    creator: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    time: PropTypes.string.isRequired,
+
+  })),
+  userId: PropTypes.string.isRequired,
+  users: PropTypes.objectOf(PropTypes.shape({
+    userId: PropTypes.string,
+    userName: PropTypes.string.isRequired,
+    lastMessageSeen: PropTypes.string,
+  })),
+};

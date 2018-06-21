@@ -8,3 +8,4 @@ if (env === 'development' || env === 'test') {
     process.env[key] = envConfig[key];
   });
 }
+// mongodb://madmax:madmax@ds125388.mlab.com:25388/react-chat

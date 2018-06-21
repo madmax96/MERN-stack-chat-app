@@ -20,9 +20,10 @@ if (token) {
     },
   }).then((response) => {
     jsx = (<Dashboard token={token} userData={response.data} />);
+    console.log(response.data);
     ReactDOM.render(jsx, document.getElementById('react-app'));
   }).catch((err) => {
-    console.log(err);
+    console.log('message', err.message);
     ReactDOM.render(jsx, document.getElementById('react-app'));
   });
 } else {

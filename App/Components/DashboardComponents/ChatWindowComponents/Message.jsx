@@ -1,46 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import UserPreview from '../UserPreview';
+import User from '../User';
 
 export default function Message(props) {
-  function messageContent() {
-    const { message } = props;
-    if (props.user) {
-      return (
-        <div className="row">
-          <div className="message__user col-1/6 text-center">
-            <span className="oi oi-person" />
-            <h5 className="message__user__name">{props.user.name}</h5>
-          </div>
-          <div className="message__text col-5/6">
-            {message}
-          </div>
-        </div>
-      );
-    }
-    return (
-      <div className="row row-end">
-        <div className="message__text col-5/6">
-          {message}
-        </div>
-      </div>
-    );
+  const { text } = props;
+  let userBox;
+  if (props.user) {
+    userBox = (
+      <div className="row row-start message__user">
+        <User name={props.user.name} />
+      </div>);
   }
+
 
   return (
 
     <div className="message">
-
-      {messageContent()}
+      {userBox}
+      <div className="row row-start">
+        <div className="message__text">
+          {text}
+        </div>
+      </div>
 
       <div className="row">
-        <div className="col-6/7 row row-start"><span>Seen:</span>
-          <UserPreview />
-          <UserPreview />
-          <UserPreview />
-          <UserPreview />
+        <div className="col-6/7 row row-start message__seen">
+          {props.seen.length !== 0 && <span>Seen: </span>}
+          {props.seen.map((userName, i) => (<span key={userName + i} className="margin-left-small"><User name={userName} /></span>))}
+
         </div>
-        <span className="message__date col-1/7">{props.date}</span>
+        <span className="message__date col-1/7 margin-left-big text-center">{props.time}</span>
       </div>
     </div>
 
@@ -48,10 +37,11 @@ export default function Message(props) {
 }
 
 Message.propTypes = {
-  date: PropTypes.string.isRequired,
-  message: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
   user: PropTypes.shape({
     name: PropTypes.string,
   }),
+  seen: PropTypes.arrayOf(PropTypes.string),
 };
 

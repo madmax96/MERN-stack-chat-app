@@ -13,6 +13,7 @@ const User = require('./../models/User');
 module.exports = (data, clientSocket) => {
   const { user } = clientSocket;
   const { groupName } = data;
+
   let updatePromise;
   if (data.subscribe) {
     updatePromise = User.findByIdAndUpdate(user._id, {

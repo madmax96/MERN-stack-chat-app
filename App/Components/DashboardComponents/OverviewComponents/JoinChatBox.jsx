@@ -1,5 +1,5 @@
 import React from 'react';
-import UserPreview from '../UserPreview';
+import User from '../User';
 
 export default () => (
   <div className="joinChatBox text-center margin-top-small">
@@ -13,7 +13,7 @@ export default () => (
     <h4 className="joinChatBox__title">Title title title</h4>
 
     <div className="row  joinChatBox__admin">
-      <UserPreview admin />
+      <User name="asaaa" />
     </div>
     <p className="">3 Spots Left</p>
     <button className=" joinChatBox__joinBtn btn btn-success">JOIN</button>

@@ -3,3 +3,7 @@
     height: 75vh;
     overflow-x: auto;
 }
+
+.dateTextBox{
+    @include textBox(20px,5px 10px ,linear-gradient(to right,$color-tertiary-light,$color-tertiary-dark));
+}

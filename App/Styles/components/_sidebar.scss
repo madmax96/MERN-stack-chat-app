@@ -1,16 +1,28 @@
 .sidebar{
-    // background-image: linear-gradient(to right,$color-primary-light,$color-primary-dark);
-   
+   overflow: hidden;
+   position: relative;
     &__chatList{
         height: 75vh;
         overflow-x: auto;
-        background-color: rgba(255,255,255,.9)
+        background-color: rgba(255,255,255,.96)
     }
-    &__makeChat{
+    &__makeChat{ 
             height: 10vh; 
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: white;
+    }
+    & .makeChatForm{
+        position: absolute;
+        bottom: -100%;
+        width: 100%;
+        transition:all .3s;
+        &--shown{
+            bottom:10vh;
+        }
+        &--hidden{
+            bottom: -100%;
+        }
     }
 }
