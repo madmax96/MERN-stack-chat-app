@@ -36,10 +36,14 @@ module.exports = (data, clientSocket, wss) => {
       },
     }, { new: true }).then(() => {
       data.chatId = chatData._id;
-      data.creator = { id: data.creator, name: user.name };
+      data.creator = { userId: data.creator, userName: user.name };
+      data.spotsLeft = data.maxNumOfUsers - 1;
+      data.createdAt = chatData._id.getTimestamp();
       // add author of chat to global chatRooms
       wss.chatRooms[data.chatId] = [clientSocket];
 
+      // send chat data to creator of chat
+      clientSocket.send(JSON.stringify({ event: 'chatCreation', data }));
       // send notif to everyone subscribed to group
       wss.sendNotifToSubscriptionGroup(data.group, data, clientSocket);
     }).catch((e) => {

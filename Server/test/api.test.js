@@ -72,6 +72,16 @@ describe('POST login', () => {
         expect(res.body.email).toBe(email);
         expect(res.body.name).toBe('User 1');
         expect(res.body.subscribedTo).toEqual(users[0].subscribedTo);
+        const { users: chatUsers, ...chat3Data } = chats[2];
+        expect(res.body.availableChats).toEqual([{
+          ...chat3Data,
+          _id: chat3Data._id.toHexString(),
+          creator: {
+            userId: chat3Data.creator.toHexString(),
+            userName: users[1].name,
+          },
+        }]);
+
         const expectedChatsData = {
           [chats[0]._id]: {
             creator: chats[0].creator.toHexString(),
@@ -97,7 +107,6 @@ describe('POST login', () => {
             ],
           },
           [chats[1]._id]: {
-            _id: chats[1]._id.toHexString(),
             creator: chats[1].creator.toHexString(),
             group: chats[1].group,
             maxNumOfUsers: chats[1].maxNumOfUsers,

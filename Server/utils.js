@@ -8,8 +8,8 @@ function sendNotifToSubscriptionGroup(group, data, creatorOfChat) {
 }
 
 function sendMessageToRoom(room, data, event) {
-  const usersInGroup = this.chatRooms[room];
-  usersInGroup.forEach((user) => {
+  const usersInRoom = this.chatRooms[room];
+  usersInRoom.forEach((user) => {
     // user is Ws Instance
     user.send(JSON.stringify({ event, data }));
   });

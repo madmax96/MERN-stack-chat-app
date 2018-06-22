@@ -1,18 +1,21 @@
+export default (data, setState) => {
+  setState((prevState) => {
+    const {
+      _id, creator, chatId, text, time, user,
+    } = data;
 
-/*
-
-
-Receive{
-    chat:ObjectId,
-}
-
-broadcast{
-    user:User,
-    chat:ObjectId,
-}
-*/
-
-export default (data, dispatch) => {
-
-
+    return {
+      chats: {
+        ...prevState.chats,
+        [chatId]: {
+          ...prevState.chats[chatId],
+          users: [...prevState.chats[chatId].users, { userId: user.id, userName: user.name }],
+          messages: [...prevState.chats[chatId].messages, {
+            _id, creator, text, time,
+          }],
+        },
+      },
+    };
+  });
 };
+

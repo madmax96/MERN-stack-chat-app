@@ -18,8 +18,19 @@ export default function MessagesBox(props) {
               seen.push(props.users[userId].userName);
             }
           });
-          const user = lastMessageUser === message.creator ? null :
-          { name: props.users[message.creator].userName };
+          let user;
+          let adminMessage;
+          if (message.creator !== '000000000000000000000000') {
+             user = lastMessageUser === message.creator ? null :
+            { name: props.users[message.creator].userName };
+          } else {
+            adminMessage =
+              (
+                <p key={message._id} className="text-center margin-bottom-small margin-top-small">
+                  <span className=" dateTextBox ">{message.text}
+                  </span>
+                </p>);
+          }
           lastMessageUser = message.creator;
           const timestamp = new Date(message.time).getTime();
           const date = moment(timestamp).format('YYYY-MM-DD');
@@ -34,6 +45,7 @@ export default function MessagesBox(props) {
           return (
             <div key={message._id}>
               {dateHeader}
+              {adminMessage || (
               <div className={`row ${className}`}>
                 <div className={`col-4/7 row ${className}`}>
                   <Message
@@ -43,9 +55,8 @@ export default function MessagesBox(props) {
                     user={user}
                   />
                 </div>
-              </div>
+              </div>)}
             </div>
-
         );
       })
     }

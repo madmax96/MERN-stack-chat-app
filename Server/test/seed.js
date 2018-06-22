@@ -11,6 +11,7 @@ const userThreeId = new ObjectID();
 
 const chatOneId = new ObjectID();
 const chatTwoId = new ObjectID();
+const chatThreeId = new ObjectID();
 
 const messageOneId = new ObjectID();
 // Users seed
@@ -45,7 +46,10 @@ const users = [
       }, {
         chatId: chatTwoId,
 
-      }],
+      }, {
+        chatId: chatThreeId,
+      },
+    ],
   },
   {
     _id: userThreeId,
@@ -114,6 +118,20 @@ const chats = [
       },
     ],
   },
+
+  {
+    _id: chatThreeId,
+    creator: userTwoId,
+    group: 'Sport',
+    title: 'Talk about football world cup',
+    maxNumOfUsers: 8,
+    users: [
+      {
+        userId: userTwoId,
+        userName: users[1].name,
+      },
+    ],
+  },
 ];
 
 const populateChats = function populateChats(done) {
@@ -121,8 +139,8 @@ const populateChats = function populateChats(done) {
   ChatRoom.remove({}).then(() => {
     const chatOne = new ChatRoom(chats[0]).save();
     const chatTwo = new ChatRoom(chats[1]).save();
-
-    return Promise.all([chatOne, chatTwo]);
+    const chatThree = new ChatRoom(chats[2]).save();
+    return Promise.all([chatOne, chatTwo, chatThree]);
   }).then(() => done())
     .catch(e => done(e));
 };

@@ -32,9 +32,11 @@ module.exports = (data, clientSocket, wss) => {
     chatId: data.chatId,
     text: `User ${user.name} joined chat`,
   };
+  const findMessagesInChatPromise = Message.find({ chatId: data.chatId });
   const MessageObj = new Message(message);
 
   const messageSavingPromise = MessageObj.save();
+
 
   const userUpdatePromise = User.findByIdAndUpdate(user._id, {
     $push: {
@@ -46,23 +48,38 @@ module.exports = (data, clientSocket, wss) => {
     $push: {
       users: { userId: user._id, userName: user.name },
     },
-  }, { new: true });
+  }, { new: false });
+  Promise.all([userUpdatePromise, chatUpdatePromise,
+    messageSavingPromise, findMessagesInChatPromise])
+    .then((results) => {
+      const message = results[2];
+      const messageObject = message.toObject();
+      messageObject.time = message._id.getTimestamp();
+      messageObject.user = {
+        id: user._id,
+        name: user.name,
+      };
+      let currentMessages = results[3];
 
-  Promise.all([userUpdatePromise, chatUpdatePromise, messageSavingPromise]).then((results) => {
-    const message = results[2];
-    const messageObject = message.toObject();
-    messageObject.time = message._id.getTimestamp();
-    messageObject.user = {
-      id: user._id,
-      name: user.name,
-    };
-    if (wss.chatRooms[data.chatId]) {
-      wss.chatRooms[data.chatId].push(clientSocket);
-    } else {
-      wss.chatRooms[data.chatId] = [clientSocket];
-    }
-    wss.sendMessageToRoom(messageObject.chatId, messageObject, 'userJoinedChat');
-  }).catch((e) => {
-    console.log(e.message);
-  });
+      currentMessages = currentMessages.map((message) => {
+        const { __v, chatId, ...messageData } = message.toObject();
+        messageData.time = message._id.getTimestamp().toString();
+        return messageData;
+      });
+      currentMessages.pop();
+      const currentUsers = results[1].toObject().users;
+      clientSocket.send(JSON.stringify({
+        event: 'joinedChatData',
+        data: { currentMessages, currentUsers, chatId: data.chatId },
+      }));
+
+      if (wss.chatRooms[data.chatId]) {
+        wss.chatRooms[data.chatId].push(clientSocket);
+      } else {
+        wss.chatRooms[data.chatId] = [clientSocket];
+      }
+      wss.sendMessageToRoom(messageObject.chatId, messageObject, 'userJoinedChat');
+    }).catch((e) => {
+      console.log(e.message);
+    });
 };

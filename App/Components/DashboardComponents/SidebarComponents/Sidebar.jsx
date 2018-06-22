@@ -28,7 +28,7 @@ export default class Sidebar extends React.Component {
   handleNewChatCreation() {
     if (this.state.chatFormOpen) {
       const { group, maxUsers, title } = this.state;
-      if (!group || title.length < 5 || maxUsers < 2 || maxUsers > 8) {
+      if (!group || title.length < 10 || maxUsers < 2 || maxUsers > 8) {
         this.setState(() => ({ error: 'Please insert all data correctly' }));
         return;
       }
@@ -39,7 +39,11 @@ export default class Sidebar extends React.Component {
   render() {
     return (
       <div className="sidebar">
-        <UserInfoBox userData={this.props.userData} />
+        <UserInfoBox
+          userData={this.props.userData}
+          showDashboard={this.props.showDashboard}
+          logout={this.props.logout}
+        />
         <div className="sidebar__chatList">
           {this.props.chats.map(chat => (<ChatInfoBox
             key={chat.chatId}
@@ -99,5 +103,7 @@ Sidebar.propTypes = {
   }).isRequired,
   subscribedTo: PropTypes.arrayOf(PropTypes.string),
   createNewChat: PropTypes.func,
+  showDashboard: PropTypes.func,
+  logout: PropTypes.func,
 };
 
